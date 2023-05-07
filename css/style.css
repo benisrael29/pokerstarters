@@ -1177,7 +1177,12 @@ button:hover {
   background-color: chartreuse;
 }
 
-
+.dealer{
+  background-image: url('../images/dealer.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
 #deck{
   background-image: url('../images/cards/back.png');
@@ -1235,7 +1240,22 @@ button:hover {
 
 }
 
+#community-card-1{
+  background-size:contain
+}
 
+#community-card-2{
+  background-size:contain
+}
+#community-card-3{
+  background-size:contain
+}
+#community-card-4{
+  background-size:contain
+}
+#community-card-5{
+  background-size:contain
+}
 .button{
   background-color: #686666;
   height: 100%;

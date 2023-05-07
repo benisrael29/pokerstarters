@@ -4,7 +4,25 @@ import {convertHand} from "./play_poker_tools/deck.js";
 
 const deck = new Deck();
 
+//community cards
+var communityCards = [];
 
+const communityCard1Display = document.getElementById("community-card-1");
+const communityCard2Display = document.getElementById("community-card-2");
+const communityCard3Display = document.getElementById("community-card-3");
+const communityCard4Display = document.getElementById("community-card-4");
+const communityCard5Display = document.getElementById("community-card-5");
+
+//Dealer Tokens
+const dealer1Display = document.getElementById("dealer-1");
+const dealer2Display = document.getElementById("dealer-2");
+const dealer3Display = document.getElementById("dealer-3");
+const dealer4Display = document.getElementById("dealer-4");
+const dealer5Display = document.getElementById("dealer-5");
+
+const dealerDisplays = [dealer1Display, dealer2Display, dealer3Display, dealer4Display, dealer5Display];
+
+//Players
 var player1 = {
     name: "P1",
     hand: [],
@@ -101,6 +119,8 @@ var me = {
 var pot = {
     main:0,
     side: 0,
+
+    bet:0,
     
     potMainDisplay: document.getElementById("pot-$"),
     potSideDisplay: document.getElementById("pot-$-s"),
@@ -108,7 +128,7 @@ var pot = {
 }
 
 //Table
-const players = [player1, player2, player3, player4, me]
+const players = [player1, player2, player3, me, player4]
 var dealerIndex = 0;
 
 
@@ -130,78 +150,292 @@ var handNumber = 0;
 //Define sleep function
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-
-function beginGame(){
+var game_in_progress = false;
+async function beginGame(){
     console.log("beginning game");
+    startGameButton.style.background = "green";
+    game_in_progress = true;
+
 
     //Play till player runs out of chips
     while(me.chips >= 0){
+
         
-        if(dealerIndex === 4){
-            dealerIndex = 0;
-        }
+        dealerIndex = dealerIndex%5;
+        console.log("dealerIndex: " + dealerIndex);
+        dealerDisplays[dealerIndex].classList.add("dealer");
+
+        //set dealer token
+
 
         blinds();
         deck.shuffle();
         deal();
+
+        await pre_flop();
         
-        for (let i = 0; i < players.length; i++) {
-            var actionPlayerIndex = (dealerIndex+i)%5;
-            var actionPlayer = players[actionPlayerIndex];
+        await flop();
+        
+        await turn();
 
-            console.log("actionPlayer: " + actionPlayer.name);
-
-            if(actionPlayer.folded){
-                continue;
-            }
-
-            if(actionPlayer==me){
-                //Wait till player presses check, fold, or raise
-                var t=0; 
-                while(!actionPlayer.turn){
-                    //wait
-                    sleep(1000);
-                    console.log('waiting ${t} sec for player to act');
-                    t++;
-
-                    if (t==10){
-                        //Player has timed out
-                        fold();
-                        break;
-                    }
-                }
-                
-
-            }
-
-        }
-
+        await river();
+        
+        
+        
         //End of hand
         handNumber++;
         dealerIndex++;
+        dealerDisplays[dealerIndex].classList.remove("dealer");
 
         if (handNumber ==100){
+            console.log("You've played 100 hands!")
             break;
         }
     }
+    
+}
+
+/* Pre-flop */
+async function pre_flop(){
+    console.log("PRE-FLOP");
+
+    for (let i = 0; i < players.length; i++) {
+        var actionPlayerIndex = (dealerIndex+i)%5;
+        var actionPlayer = players[actionPlayerIndex];
+    
+        console.log("actionPlayer: " + actionPlayer.name);
+        actionPlayer.turn = true;
+
+        //Highlight player
+        actionPlayer.card1Display.style.border = "2px solid red";
+        actionPlayer.card2Display.style.border = "2px solid red";
+    
+        if(actionPlayer.folded){
+            continue;
+        }
+    
+        if(actionPlayer==me && !actionPlayer.folded){
+            //Wait till player presses check, fold, or raise
+            var t=0; 
+            while(actionPlayer.turn){
+                //wait
+                await sleep(1000);
+                console.log('waiting ${t} sec for player to act');
+                t++;
+    
+                if (t==100){
+                    //Player has timed out
+                    break;
+                }
+            }
+        
+    
+        }else{
+            //BOT action
+            await botAction(actionPlayer);
+        }
+
+
+        //Unhighlight player
+        actionPlayer.card1Display.style.border = "none";
+        actionPlayer.card2Display.style.border = "none";
+        
+    }
+    
 
 }
 
 
+/* Flop */
+async function flop(){
+    console.log("FLOP");
+
+    communityCards.push(deck.deal());
+    communityCards.push(deck.deal());
+    communityCards.push(deck.deal());
+
+    //Display flop
+    const communitySrc1 = convertHand(communityCards[0]);
+    const communitySrc2 = convertHand(communityCards[1]);
+    const communitySrc3 = convertHand(communityCards[2]);
+
+    communityCard1Display.style.backgroundImage = `url("${communitySrc1.replace('"', '\\"')}")`;
+    communityCard2Display.style.backgroundImage = `url("${communitySrc2.replace('"', '\\"')}")`;
+    communityCard3Display.style.backgroundImage = `url("${communitySrc3.replace('"', '\\"')}")`;
+
+    communityCard1Display.classList.remove('board');
+    communityCard2Display.classList.remove('board');
+    communityCard3Display.classList.remove('board');
+
+    
+    for (let i = 0; i < players.length; i++) {
+        var actionPlayerIndex = (dealerIndex+i)%5;
+        var actionPlayer = players[actionPlayerIndex];
+        
+        actionPlayer.turn = true;
+
+        //Highlight player
+        actionPlayer.card1Display.style.border = "2px solid red";
+        actionPlayer.card2Display.style.border = "2px solid red";
+
+        if(actionPlayer.folded){
+            continue;
+        }
+        
+        if(actionPlayer==me){
+            //Wait till player presses check, fold, or raise
+            var t=0; 
+            while(actionPlayer.turn){
+                //wait
+                await sleep(1000);
+                console.log('waiting ${t} sec for player to act');
+                t++;
+                
+                if (t==100){
+                    //Player has timed out
+                    break;
+                }
+            }
+            
+        }else{
+            //BOT action
+            await botAction(actionPlayer);
+        }
+
+        //Unhighlight player
+        actionPlayer.card1Display.style.border = "none";
+        actionPlayer.card2Display.style.border = "none";
+    }
+}
+
+
+/* Turn */
+async function turn(){
+    console.log("TURN")
+
+
+    //Deal turn
+    communityCards.push(deck.deal());
+
+    //Display turn
+    const communitySrc4 = convertHand(communityCards[3]);
+    communityCard4Display.style.backgroundImage = `url("${communitySrc4.replace('"', '\\"')}")`;
+    communityCard4Display.classList.remove('board');
+    
+
+    for (let i = 0; i < players.length; i++) {
+        var actionPlayerIndex = (dealerIndex+i)%5;
+        var actionPlayer = players[actionPlayerIndex];
+    
+        console.log("actionPlayer: " + actionPlayer.name);
+        actionPlayer.turn = true;
+        
+
+        //Highlight player
+        actionPlayer.card1Display.style.border = "2px solid red";
+        actionPlayer.card2Display.style.border = "2px solid red";
+
+        if(actionPlayer.folded){
+            continue;
+        }
+        
+        if(actionPlayer==me){
+            //Wait till player presses check, fold, or raise
+            var t=0; 
+            while(actionPlayer.turn){
+                //wait
+                await sleep(1000);
+                console.log('waiting ${t} sec for player to act');
+                t++;
+                
+                if (t==100){
+                    //Player has timed out
+                    break;
+                }
+            }
+            
+        }else{
+            //BOT action
+            await botAction(actionPlayer);
+        }
+
+        //Unhighlight player
+        actionPlayer.card1Display.style.border = "none";
+        actionPlayer.card2Display.style.border = "none";
+        
+    }
+}
+
+
+/* River */
+async function river(){
+    console.log("RIVER")
+
+    //Deal river
+    communityCards.push(deck.deal());
+
+    //Display river
+    const communitySrc5 = convertHand(communityCards[4]);
+    communityCard5Display.style.backgroundImage = `url("${communitySrc5.replace('"', '\\"')}")`;
+    communityCard5Display.classList.remove('board');
+    
+        for (let i = 0; i < players.length; i++) {
+            var actionPlayerIndex = (dealerIndex+i)%5;
+            var actionPlayer = players[actionPlayerIndex];
+            
+            console.log("actionPlayer: " + actionPlayer.name);
+            actionPlayer.turn = true;
+            
+            //Highlight player
+            actionPlayer.card1Display.style.border = "2px solid red";
+            actionPlayer.card2Display.style.border = "2px solid red";
+            
+            if(actionPlayer.folded){
+                continue;
+            }
+            
+            if(actionPlayer==me){
+                //Wait till player presses check, fold, or raise
+                var t=0; 
+                while(actionPlayer.turn){
+                    //wait
+                    await sleep(1000);
+                    console.log('waiting ${t} sec for player to act');
+                    t++;
+                    
+                    if (t==100){
+                        //Player has timed out
+                        break;
+                    }
+                }
+                
+            }else{
+                //BOT action
+                await botAction(actionPlayer);
+            }
+
+        //Unhighlight player
+        actionPlayer.card1Display.style.border = "none";
+        actionPlayer.card2Display.style.border = "none";
+            
+        }
+    }       
+
 function fold(){
+    console.log("fold")
     me.folded = true;
     me.turn = false;
 }
 
 function check(){
+    console.log("check")
     me.turn = false;
 }
 
 function raise(){
+    console.log("raise")
     me.turn = false;
 }
-
-
 
 
 function deal(){
@@ -235,15 +469,13 @@ function drawChips(){
     player2.chipsDisplay.innerHTML = "$"+ player2.chips;
     player3.chipsDisplay.innerHTML = "$"+ player3.chips;
     player4.chipsDisplay.innerHTML = "$"+ player4.chips;
-
     pot.potMainDisplay.innerHTML = "$"+pot.main;
-
 }
 
 
 function blinds(){
-    var bigBlindPlayer = players[(dealerIndex + 2)%4];
-    var smallBlindPlayer = players[(dealerIndex + 1)%4];
+    var bigBlindPlayer = players[(dealerIndex + 2)%5];
+    var smallBlindPlayer = players[(dealerIndex + 1)%5];
 
     bigBlindPlayer.bigBlind = true;
     smallBlindPlayer.smallBlind = true;
@@ -260,3 +492,16 @@ function blinds(){
     
     drawChips();
 }
+
+async function botAction(player){
+    console.log("botAction: " + player.name);
+    
+    await sleep(1000);
+    player.bet = 10;
+    player.chips -= 10;
+
+    pot.main += 10;
+    
+    drawChips();
+}
+
