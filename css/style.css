@@ -1256,6 +1256,21 @@ button:hover {
 #community-card-5{
   background-size:contain
 }
+
+#amount{
+  max-height: 90%;
+  background-color: #bb4949;
+  color: #bb4949;
+}
+
+#amount-to-raise{
+  background-color: #bb4949;
+  color: #646363;
+}
+
+#raise-button{
+}
+
 .button{
   background-color: #686666;
   height: 100%;

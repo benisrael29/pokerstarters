@@ -19,8 +19,15 @@ const dealer2Display = document.getElementById("dealer-2");
 const dealer3Display = document.getElementById("dealer-3");
 const dealer4Display = document.getElementById("dealer-4");
 const dealer5Display = document.getElementById("dealer-5");
-
 const dealerDisplays = [dealer1Display, dealer2Display, dealer3Display, dealer4Display, dealer5Display];
+
+//Raise
+const raiseSelector = document.getElementById("amount");
+const amountDisplay = document.getElementById("amount-to-raise");
+raiseSelector.addEventListener("change", (event) => {
+    amountDisplay.innerHTML = `${event.target.value}`;
+  });
+
 
 //Players
 var player1 = {
@@ -120,8 +127,8 @@ var pot = {
     main:0,
     side: 0,
 
-    bet:0,
-    
+    minBet: 0,
+        
     potMainDisplay: document.getElementById("pot-$"),
     potSideDisplay: document.getElementById("pot-$-s"),
 
@@ -143,6 +150,8 @@ startGameButton.addEventListener("click", beginGame);
 foldButton.addEventListener("click", fold);
 checkButton.addEventListener("click", check);
 raiseButton.addEventListener("click", raise);
+hideButtons();
+
 
 //Track hands
 var handNumber = 0;
@@ -151,7 +160,12 @@ var handNumber = 0;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 var game_in_progress = false;
+
 async function beginGame(){
+    if (game_in_progress){
+        console.log("game already in progress");
+        return;}
+
     console.log("beginning game");
     startGameButton.style.background = "green";
     game_in_progress = true;
@@ -172,20 +186,23 @@ async function beginGame(){
         deck.shuffle();
         deal();
 
+        await sleep(1500);
         await pre_flop();
         
+        await sleep(1500);
         await flop();
         
+        await sleep(1500);
         await turn();
-
+        
+        await sleep(1500);
         await river();
         
-        
-        
+                
         //End of hand
+        dealerDisplays[dealerIndex].classList.remove("dealer");
         handNumber++;
         dealerIndex++;
-        dealerDisplays[dealerIndex].classList.remove("dealer");
 
         if (handNumber ==100){
             console.log("You've played 100 hands!")
@@ -210,12 +227,20 @@ async function pre_flop(){
         actionPlayer.card1Display.style.border = "2px solid red";
         actionPlayer.card2Display.style.border = "2px solid red";
     
+        //Check if players have folded
+        if (checkForFolded()){
+            processWinner(actionPlayer);
+            break;
+        }
+
         if(actionPlayer.folded){
             continue;
         }
     
         if(actionPlayer==me && !actionPlayer.folded){
             //Wait till player presses check, fold, or raise
+            displayButtons();
+
             var t=0; 
             while(actionPlayer.turn){
                 //wait
@@ -228,6 +253,9 @@ async function pre_flop(){
                     break;
                 }
             }
+
+            //Hide buttons
+            hideButtons();
         
     
         }else{
@@ -274,6 +302,12 @@ async function flop(){
         
         actionPlayer.turn = true;
 
+        //Check if players have folded
+        if (checkForFolded()){
+            processWinner(actionPlayer);
+            break;
+        }
+
         //Highlight player
         actionPlayer.card1Display.style.border = "2px solid red";
         actionPlayer.card2Display.style.border = "2px solid red";
@@ -283,6 +317,9 @@ async function flop(){
         }
         
         if(actionPlayer==me){
+            //Display buttons
+            displayButtons();
+            
             //Wait till player presses check, fold, or raise
             var t=0; 
             while(actionPlayer.turn){
@@ -296,6 +333,9 @@ async function flop(){
                     break;
                 }
             }
+
+            //Hide buttons
+            hideButtons();
             
         }else{
             //BOT action
@@ -335,11 +375,20 @@ async function turn(){
         actionPlayer.card1Display.style.border = "2px solid red";
         actionPlayer.card2Display.style.border = "2px solid red";
 
+        //Check if players have folded
+        if (checkForFolded()){
+            processWinner(actionPlayer);
+            break;
+        }
+
         if(actionPlayer.folded){
             continue;
         }
         
         if(actionPlayer==me){
+            //Display buttons
+            displayButtons();
+            
             //Wait till player presses check, fold, or raise
             var t=0; 
             while(actionPlayer.turn){
@@ -353,6 +402,9 @@ async function turn(){
                     break;
                 }
             }
+
+            //Hide buttons
+            hideButtons();
             
         }else{
             //BOT action
@@ -390,11 +442,21 @@ async function river(){
             actionPlayer.card1Display.style.border = "2px solid red";
             actionPlayer.card2Display.style.border = "2px solid red";
             
+            //Check if players have folded
+            if (checkForFolded()){
+                processWinner(actionPlayer);
+                break;
+            }
+
+
             if(actionPlayer.folded){
                 continue;
             }
             
             if(actionPlayer==me){
+                // Display buttons
+                displayButtons();
+                
                 //Wait till player presses check, fold, or raise
                 var t=0; 
                 while(actionPlayer.turn){
@@ -408,6 +470,9 @@ async function river(){
                         break;
                     }
                 }
+
+                //Hide buttons
+                hideButtons();
                 
             }else{
                 //BOT action
@@ -429,6 +494,14 @@ function fold(){
 
 function check(){
     console.log("check")
+
+    if (pot.minBet > 0){
+        //Player has to call
+        me.chips -= pot.minBet;
+        pot.chips += pot.minBet;
+        drawChips();
+    }
+    
     me.turn = false;
 }
 
@@ -497,11 +570,74 @@ async function botAction(player){
     console.log("botAction: " + player.name);
     
     await sleep(1000);
-    player.bet = 10;
-    player.chips -= 10;
 
-    pot.main += 10;
+
+    //Todo: implement bot logic
+    //generate random int between 0 and 100
+    var bet = Math.floor(Math.random() * 100);
+
+    player.bet = bet;
+    player.chips -= bet;
+
+    //If bet is greater than min bet, add to pot. Else, add min bet to pot
+    if (player.bet > pot.minBet){
+        pot.main += bet;
+        pot.minBet = bet;
+    }else{
+        pot.main += pot.minBet;
+    }
+           
     
     drawChips();
 }
 
+function checkForFolded(){
+    //Returns true if all players have folded except one
+    var numFolded = 0;
+    for (let i = 0; i < players.length; i++) {
+        if(players[i].folded){
+            numFolded++;
+        }
+    }
+    if(numFolded == 4){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+
+function processWinner(player){
+    console.log("processWinner: " + player.name);
+    player.chips += pot.main;
+    pot.main = 0;
+    drawChips();
+}
+
+
+function displayButtons(){
+    foldButton.style.display = "inline-block";
+
+    if (pot.minBet == 0){
+        checkButton.style.display = "inline-block";
+        raiseButton.style.display = "inline-block";
+    }
+    
+    if (pot.minBet > 0){
+        //Display Call, fold, raise buttons
+        checkButton.innerHTML = "Call $" + pot.minBet;
+        checkButton.style.display = "inline-block";
+        raiseButton.style.display = "inline-block";
+    }
+
+}
+
+function hideButtons(){
+    //Reset check/call
+    checkButton.innerHTML = "Check";
+
+    //Hide check, fold, raise buttons
+    checkButton.style.display = "none";
+    foldButton.style.display = "none";
+    raiseButton.style.display = "none";
+}

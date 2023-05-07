@@ -205,8 +205,11 @@
           <div id="raise" class="cell">
             <button id="raise-button" type="button" class="button">Raise</button>
           </div>
-          <div class="cell"></div>
-          <div class="cell"></div>
+          <div class="cell">
+            <input type="range" id="amount" name="amount" min="0" max="100" step="1" style="-webkit-appearance: slider-vertical; z-index: 100;">     
+
+          </div>
+          <div id = "amount-to-raise" class="cell"></div>
           <div id = "blank" class="cell"></div>
 
         </div>
@@ -221,14 +224,12 @@
           <div class="cell"></div>
           <div class="cell"></div>
           <div class="cell"></div>
-          <div class="cell">
-            <label for="amount">Select an amount:</label>
-            <input type="range" id="amount" name="amount" min="0" max="100" step="1" style="-webkit-appearance: slider-vertical; z-index: 100;">          </div>
+          <div class="cell"></div>
           <div class="cell"></div>
           <div id="start-game" class="cell">
             <button id="start-game-button" type="button" class="button" >Start Game</button>
           </div>
-          <div id = "blank" class="cell"></div>
+          <div class="cell"></div>
         </div>
       </div>
       <script type="module" src="js/play_poker.js"></script>
