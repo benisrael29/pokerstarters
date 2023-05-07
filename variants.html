@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <a href="index.html" class="header-logo-link">
+          <img src="images/logo.png" alt="logo" class="header-logo">
+        </a>
+        <h1 class="header-title">POKERSTARTERS.COM</h1>
+        <div class="header-icons">
+          <a href="facebook.com" class="header-icon-link">
+            <img src="images/icons/facebook-app-symbol.png" alt="Facebook" class="header-icon">
+          </a>
+          <a href="https://www.youtube.com/watch?v=CpSewSHZhmo" class="header-icon-link">
+            <img src="images/icons/youtube.png" alt="YouTube" class="header-icon">
+          </a>
+          <a href="contact.html" class="header-icon-link">
+            <img src="images/icons/mail.png" alt="Mail" class="header-icon">
+          </a>
+        </div>
+    </header>
+
+
+    <!-- Nav bar -->
+    <nav class="nav">
+      
+      <div class="dropdown">
+        <a href="rules.html" class="nav-item">Rules ▼</a>
+        <div class="dropdown-content">
+          <a href="rules.html">Basics</a>
+          <a href="rules.html">Hand Ranking</a>
+          <a href="rules.html">Betting Structure</a>
+          <a href="rules.html">Betting Table</a>
+          <a href="rules.html">Table Etiquette</a>
+          <a href="rules.html">Glossary</a>
+        </div>
+      </div>
+      
+      <div class="dropdown" style="background-color: rgb(170, 169, 169);">
+        <a href="variants.html" class="nav-item">Variants ▼</a>
+        <div class="dropdown-content">
+          <a href="variants.html">Texas Hold'em</a>
+          <a href="variants.html">Omaha</a> 
+          <a href="variants.html">Seven-Card Stud</a>
+          <a href="variants.html">Razz</a>
+          <a href="variants.html">Other Variants</a>
+
+        </div>
+      </div>
+      
+      <div class="dropdown">
+        <a href="strategies.html" class="nav-item">Strategies ▼</a>
+        <div class="dropdown-content">
+          <a href="strategies.html">Basic </a>
+          <a href="strategies.html">Intermediate </a>
+          <a href="strategies.html">Advanced  </a>
+        </div>
+      </div>
+      
+      <div class="dropdown">
+        <a href="tools.html" class="nav-item">Tools ▼</a>
+        <div class="dropdown-content">
+          <a href="tools.html">Quiz</a>
+          <a href="tools.html">Hand Evaluator</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <a href="contact.html" class="nav-item">Contact ▼</a>
+        <div class="dropdown-content">
+          <a href="contact.html">About Me</a>
+          <a href="contact.html">Contact Me</a>
+
+        </div>
+      </div>
+    </nav>
+
+    <!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="variants-grid-container">
+      <!-- Texas Holdem -->
+      <div class="variant-grid-item">
+        <h1>Texas Hold'em</h1>
+        <p>Texas Hold'em is a popular poker variant where players receive two private hole cards and share five community cards (Flop, Turn, River). The objective is to form the best five-card hand using any combination of hole and community cards. Betting rounds occur after hole cards are dealt and after each community card reveal. Players can Check, Bet/Raise, Call, or Fold. The game ends in a showdown where remaining players reveal their hands, and the highest-ranking hand wins the pot.</p>
+      </div>
+      
+      <div class="variant-grid-item middle-column">
+      <h1 style="font-size: 100px;">1</h1>
+      <h3 style="text-align: left">  &#8592 Description</h3>
+      <h3 id="best-hand-arrow" style="text-align: right">  Best Hand &#8594</h3>
+
+      </div>
+      <div class="variant-grid-item table-box">
+        <div id="table-texas" class="table">
+          <div class="card deck"></div>
+          <div class="card card1"></div>
+          <div class="card card2"></div>
+          <div class="card card3"></div>
+          <div class="card card4"></div>
+          <div class="card card5"></div>
+
+        </div>
+        
+        
+      </div>
+
+      <!-- Omaha -->
+      <div class="variant-grid-item">
+        <h1>Omaha</h1>
+        <p>Omaha is a poker variant similar to Texas Hold'em, but with key differences. Each player receives four private hole cards and shares five community cards (Flop, Turn, River). To form a valid hand, players must use exactly two hole cards and three community cards. Betting rounds occur after hole cards are dealt and after each community card reveal. Players can Check, Bet/Raise, Call, or Fold. In a showdown, remaining players reveal their hands, and the highest-ranking hand wins the pot.</p>
+      </div>
+      <div class="variant-grid-item middle-column">
+        <h1 style="font-size: 100px;">2</h1>
+         </div>
+      <div class="variant-grid-item table-box">
+        <div id="table-omaha" class="table">
+          <div class="card deck"></div>
+          <div class="card card6"></div>
+          <div class="card card7"></div>
+          <div class="card card8"></div>
+          <div class="card card9"></div>
+        </div>
+      </div>
+
+
+
+      <!-- Seven Card Stud -->
+      <div class="variant-grid-item">
+        <h1>Seven Card Stud</h1>
+        <p>Seven Card Stud is a classic poker variant where each player receives seven cards throughout the hand, with four face-up and three face-down. The goal is to create the best five-card hand. Unlike Texas Hold'em and Omaha, there are no community cards. Betting rounds occur after the initial three cards are dealt and after each subsequent card. Players can Bet/Raise, Call, or Fold. In the showdown, remaining players reveal their hands, and the highest-ranking hand wins the pot.</p>
+      </div>
+      <div class="variant-grid-item middle-column">
+       <h1 style="font-size: 100px;">3</h1>
+
+      </div>
+      <div class="variant-grid-item table-box">
+        <div id="table-stud" class="table">
+          <div class="card deck"></div>
+          <div class="card card10"></div>
+          <div class="card card11"></div>
+          <div class="card card12"></div>
+          <div class="card card13"></div>
+          <div class="card card14"></div>
+
+        </div>
+      </div>
+
+
+      <!-- 2-7 Triple Draw -->
+      <div class="variant-grid-item">
+        <h1>2-7 Triple Draw</h1>
+        <p>Triple draw is a lowball poker variant, a twist on Seven Card Stud, where the goal is to form the lowest five-card hand from seven dealt cards. There are no community cards. Betting rounds occur after the initial three cards are dealt and after each subsequent card. Players can Bet/Raise, Call, or Fold. Aces are high and straights/flushes don't count against the hand. In the showdown, remaining players reveal their hands, and the lowest-ranking hand, not the highest, wins the pot.</p>
+      </div>
+      <div class="variant-grid-item middle-column">
+        <h1 style="font-size: 100px;">4</h1>
+
+      </div>
+      <div class="variant-grid-item table-box">
+        <div id="table-2-7" class="table">
+          <div class="card deck"></div>
+          <div class="card card15"></div>
+          <div class="card card16"></div>
+          <div class="card card17"></div>
+          <div class="card card18"></div>
+          <div class="card card19"></div>
+
+        </div>
+      </div>
+
+      <!-- Other Variants -->
+      <div class="variant-grid-item">
+        <h1>Other Variants</h1>
+        <p>Some other poker variants include: Pineapple: Similar to Texas Hold'em, but players receive three hole cards, discarding one before the Flop. Triple Draw Lowball: Players receive five cards aiming for the lowest hand, with three drawing and betting rounds.  Badugi: A lowball draw game where the goal is to create the lowest four-card hand with no pairs and all suits.</p>
+      </div>
+      <div class="variant-grid-item middle-column">
+        <h1 style="font-size: 100px;">5</h1>
+      </div>
+      <div class="variant-grid-item">
+        
+      </div>
+
+
+<script src="js/variants.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+

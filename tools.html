@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <a href="index.html" class="header-logo-link">
+          <img src="images/logo.png" alt="logo" class="header-logo">
+        </a>
+        <h1 class="header-title">POKERSTARTERS.COM</h1>
+        <div class="header-icons">
+          <a href="facebook.com" class="header-icon-link">
+            <img src="images/icons/facebook-app-symbol.png" alt="Facebook" class="header-icon">
+          </a>
+          <a href="https://www.youtube.com/watch?v=CpSewSHZhmo" class="header-icon-link">
+            <img src="images/icons/youtube.png" alt="YouTube" class="header-icon">
+          </a>
+          <a href="contact.html" class="header-icon-link">
+            <img src="images/icons/mail.png" alt="Mail" class="header-icon">
+          </a>
+        </div>
+    </header>
+
+
+    <!-- Nav bar -->
+    <nav class="nav">
+      
+      <div class="dropdown">
+        <a href="rules.html" class="nav-item">Rules ▼</a>
+        <div class="dropdown-content">
+          <a href="rules.html">Basics</a>
+          <a href="rules.html">Hand Ranking</a>
+          <a href="rules.html">Betting Structure</a>
+          <a href="rules.html">Betting Table</a>
+          <a href="rules.html">Table Etiquette</a>
+          <a href="rules.html">Glossary</a>
+        </div>
+      </div>
+      
+      <div class="dropdown">
+        <a href="variants.html" class="nav-item">Variants ▼</a>
+        <div class="dropdown-content">
+          <a href="variants.html">Texas Hold'em</a>
+          <a href="variants.html">Omaha</a> 
+          <a href="variants.html">Seven-Card Stud</a>
+          <a href="variants.html">Razz</a>
+          <a href="variants.html">Other Variants</a>
+
+        </div>
+      </div>
+      
+      <div class="dropdown">
+        <a href="strategies.html" class="nav-item">Strategies ▼</a>
+        <div class="dropdown-content">
+          <a href="strategies.html">Basic </a>
+          <a href="strategies.html">Intermediate </a>
+          <a href="strategies.html">Advanced  </a>
+        </div>
+      </div>
+      
+      <div class="dropdown" style="background-color: rgb(170, 169, 169);">
+        <a href="tools.html" class="nav-item">Tools ▼</a>
+        <div class="dropdown-content">
+          <a href="tools.html">Quiz</a>
+          <a href="tools.html">Hand Evaluator</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <a href="contact.html" class="nav-item">Contact ▼</a>
+        <div class="dropdown-content">
+          <a href="contact.html">About Me</a>
+          <a href="contact.html">Contact Me</a>
+
+        </div>
+      </div>
+    </nav>
+
+
+    <!-- Play widget -->
+    <div class="play-poker">
+      <div class="grid">
+        <!-- Row 1 -->
+        <div class="row">
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "P1-card-1" class="cell">P1-c1</div>
+          <div id = "P1-card-2" class="cell">P1-c2</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+
+          <div id = "blank" class="cell">-</div>
+          <div id = "P2-card-1" class="cell">P2-c1</div>
+          <div id = "P2-card-2" class="cell">P2-c2</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+        </div>
+        <!-- Row 2 -->
+        <div class="row">
+
+          <div id = "blank" class="cell">-</div>
+
+          <div id = "blank" class="cell">-</div>
+          <div id = "P1-$" class="cell">P1-$</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+
+          <div id = "P2-$" class="cell">P2-$</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+
+        </div>
+        <!-- Row 3 -->
+        <div class="row">
+          <div id = "blank" class="cell">-</div>
+
+          <div id = "blank" class="cell">-</div>
+          <div id = "dealer-1" class="cell board">D1</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "dealer-2" class="cell board">D2</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+
+        </div>
+        <!-- Row 4 -->
+        <div class="row">
+          <div id = "P4-card-1" class="cell">P4-c1</div>
+          <div id ="P4-card-2" class="cell">P4-c2</div>
+          <div id = "dealer-5" class="cell board">D5</div>
+          <div id = "deck" class="cell board">D</div>
+          <div id= "blank" class="cell board"></div>
+          <div id= 'community-card-1' class="cell board">C-C1</div>
+          <div id= 'community-card-2' class="cell board">C-C2</div>
+          <div id= 'community-card-3' class="cell board">C-C3</div>
+          <div id= 'community-card-4' class="cell board">C-C4</div>
+          <div id= 'community-card-5' class="cell board">C-C5</div>
+          <div id= "dealer-3" class="cell board">D3</div>
+          <div id = "P3-card-1" class="cell">P3-c1</div>
+          <div id = "P3-card-2" class="cell">P3-c2</div>
+
+        </div>
+
+        <!-- Row 5 -->
+        <div class="row">
+          <div id = "blank" class="cell">-</div>
+          <div id = "P4-$" class="cell">P4-$</div>
+          <div id = "blank" class="cell board">|</div>
+          <div id = "pot-$" class="cell board">pot</div>
+          <div id = "pot-$-s" class="cell board">pot-s</div>
+          <div id = "blank" class="cell board"></div>
+          <div id = "blank" class="cell board"></div>
+          <div id = "blank" class="cell board"></div>
+          <div id = "blank" class="cell board"></div>
+          <div id = "blank" class="cell board"></div>
+          <div id = "blank" class="cell board">|</div>
+          <div id = "P3-$" class="cell">P3-$</div>
+          <div id = "blank" class="cell">-</div>
+
+        </div>
+        <!-- Row 6 -->
+        <div class="row">
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell">-</div>
+          <div id = "blank" class="cell board">|</div>
+          <div id = "dealer-4" class="cell board">D4</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "blank" class="cell board">-</div>
+          <div id = "blank" class="cell board">|</div>
+          <div class="cell"></div>
+          <div id = "blank" class="cell">-</div>
+
+        </div>
+        <!-- Row 7 -->
+        <div class="row">
+          <div id = "blank" class="cell">-</div>
+
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div id="me-card-1" class="cell">me-c1</div>
+          <div id = "me-card-2" class="cell">me-c2</div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div id = "fold" class="cell">
+            <button id="fold-button" type="button" class="button">Fold</button>
+          </div>
+          <div id="check" class="cell">
+            <button id="check-button" type="button" class="button">Check</button>
+          </div>
+          <div id="raise" class="cell">
+            <button id="raise-button" type="button" class="button">Raise</button>
+          </div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div id = "blank" class="cell">-</div>
+
+        </div>
+        <!-- Row 8 -->
+        <div class="row">
+          <div id = "blank" class="cell">-</div>
+
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div id="me-$" class="cell">me-$</div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell">
+            <label for="amount">Select an amount:</label>
+            <input type="range" id="amount" name="amount" min="0" max="100" step="1" style="-webkit-appearance: slider-vertical; z-index: 100;">          </div>
+          <div class="cell"></div>
+          <div id="start-game" class="cell">
+            <button id="start-game-button" type="button" class="button" >Start Game</button>
+          </div>
+          <div id = "blank" class="cell">-</div>
+        </div>
+      </div>
+      <script type="module" src="js/play_poker.js"></script>
+    </div>
+
+
+    <div class="card-selector">
+      <div class="card-images">
+        <h1>Heads Up - Hand Evaluator
+        </h1>
+        <p style="padding-bottom: 20px;">Enter your cards and the community cards to see the odds of you winning after 100,000 simulated hands.</p>
+        <div class="card-row">
+          <img src="images/cards/ace_of_clubs.png" alt="Ace of Clubs" data-card="Ac" width="30">
+          <img src="images/cards/2_of_clubs.png" alt="2 of Clubs" data-card="2c" width="30" height="30">
+          <img src="images/cards/3_of_clubs.png" alt="3 of Clubs" data-card="3c" width="30">
+          <img src="images/cards/4_of_clubs.png" alt="4 of Clubs" data-card="4c" width="30">
+          <img src="images/cards/5_of_clubs.png" alt="5 of Clubs" data-card="5c" width="30">
+          <img src="images/cards/6_of_clubs.png" alt="6 of Clubs" data-card="6c" width="30">
+          <img src="images/cards/7_of_clubs.png" alt="7 of Clubs" data-card="7c" width="30">
+          <img src="images/cards/8_of_clubs.png" alt="8 of Clubs" data-card="8c" width="30">
+          <img src="images/cards/9_of_clubs.png" alt="9 of Clubs" data-card="9c" width="30">
+          <img src="images/cards/10_of_clubs.png" alt="10 of Clubs" data-card="Tc" width="30">
+          <img src="images/cards/jack_of_clubs.png" alt="Jack of Clubs" data-card="Jc" width="30">
+          <img src="images/cards/queen_of_clubs.png" alt="Queen of Clubs" data-card="Qc" width="30">
+          <img src="images/cards/king_of_clubs.png" alt="King of Clubs" data-card="Kc" width="30">
+          <img src="images/cards/ace_of_diamonds.png" alt="Ace of Diamonds" data-card="Ad" width="30">
+          <img src="images/cards/2_of_diamonds.png" alt="2 of Diamonds" data-card="2d" width="30">
+          <img src="images/cards/3_of_diamonds.png" alt="3 of Diamonds" data-card="3d" width="30">
+          <img src="images/cards/4_of_diamonds.png" alt="4 of Diamonds" data-card="4d" width="30">
+          <img src="images/cards/5_of_diamonds.png" alt="5 of Diamonds" data-card="5d" width="30">
+          <img src="images/cards/6_of_diamonds.png" alt="6 of Diamonds" data-card="6d" width="30">
+          <img src="images/cards/7_of_diamonds.png" alt="7 of Diamonds" data-card="7d" width="30">
+          <img src="images/cards/8_of_diamonds.png" alt="8 of Diamonds" data-card="8d" width="30">
+          <img src="images/cards/9_of_diamonds.png" alt="9 of Diamonds" data-card="9d" width="30">
+          <img src="images/cards/10_of_diamonds.png" alt="10 of Diamonds" data-card="Td" width="30">
+          <img src="images/cards/jack_of_diamonds.png" alt="Jack of Diamonds" data-card="Jd" width="30">
+          <img src="images/cards/queen_of_diamonds.png" alt="Queen of Diamonds" data-card="Qd" width="30">
+          <img src="images/cards/king_of_diamonds.png" alt="King of Diamonds" data-card="Kd" width="30">
+<!--         </div>
+        <div class="card-row"> -->
+          <img src="images/cards/ace_of_hearts.png" alt="Ace of Hearts" data-card="Ah" width="30">
+          <img src="images/cards/2_of_hearts.png" alt="2 of Hearts" data-card="2h" width="30">
+          <img src="images/cards/3_of_hearts.png" alt="3 of Hearts" data-card="3h" width="30">
+          <img src="images/cards/4_of_hearts.png" alt="4 of Hearts" data-card="4h" width="30">
+          <img src="images/cards/5_of_hearts.png" alt="5 of Hearts" data-card="5h" width="30">
+          <img src="images/cards/6_of_hearts.png" alt="6 of Hearts" data-card="6h" width="30">
+          <img src="images/cards/7_of_hearts.png" alt="7 of Hearts" data-card="7h" width="30">
+          <img src="images/cards/8_of_hearts.png" alt="8 of Hearts" data-card="8h" width="30">
+          <img src="images/cards/9_of_hearts.png" alt="9 of Hearts" data-card="9h" width="30">
+          <img src="images/cards/10_of_hearts.png" alt="10 of Hearts" data-card="Th" width="30">
+          <img src="images/cards/jack_of_hearts.png" alt="Jack of Hearts" data-card="Jh" width="30">
+          <img src="images/cards/queen_of_hearts.png" alt="Queen of Hearts" data-card="Qh" width="30">
+          <img src="images/cards/king_of_hearts.png" alt="King of Hearts" data-card="Kh" width="30">
+<!--         </div>
+        <div class="card-row"> -->
+          <img src="images/cards/ace_of_spades.png" alt="Ace of Spades" data-card="As" width="30">
+          <img src="images/cards/2_of_spades.png" alt="2 of Spades" data-card="2s" width="30">
+          <img src="images/cards/3_of_spades.png" alt="3 of Spades" data-card="3s" width="30">
+          <img src="images/cards/4_of_spades.png" alt="4 of Spades" data-card="4s" width="30">
+          <img src="images/cards/5_of_spades.png" alt="5 of Spades" data-card="5s" width="30">
+          <img src="images/cards/6_of_spades.png" alt="6 of Spades" data-card="6s" width="30">
+          <img src="images/cards/7_of_spades.png" alt="7 of Spades" data-card="7s" width="30">
+          <img src="images/cards/8_of_spades.png" alt="8 of Spades" data-card="8s" width="30">
+          <img src="images/cards/9_of_spades.png" alt="9 of Spades" data-card="9s" width="30">
+          <img src="images/cards/10_of_spades.png" alt="10 of Spades" data-card="Ts" width="30">
+          <img src="images/cards/jack_of_spades.png" alt="Jack of Spades" data-card="Js" width="30">
+          <img src="images/cards/queen_of_spades.png" alt="Queen of Spades" data-card="Qs" width="30">
+          <img src="images/cards/king_of_spades.png" alt="King of Spades" data-card="Ks" width="30">
+        </div>
+        <!-- spacer -->
+        <div class="spacer"></div>
+
+        
+        <div class="card-row">
+          <div class= "my-cards">
+            <p>My hand:</p>
+            <img id = "selected-card-1" src="images/cards/back.png" alt="back" data-card="back1" width="30">
+            <img id = "selected-card-2" src="images/cards/back.png" alt="back" data-card="back2" width="30"> 
+          </div>
+
+          <div class= "community cards">
+            <p>Community Cards:</p>
+            <img id = "selected-card-3" src="images/cards/back.png" alt="back" data-card="back3" width="30">
+            <img id = "selected-card-4" src="images/cards/back.png" alt="back" data-card="back4" width="30">
+            <img id = "selected-card-5" src="images/cards/back.png" alt="back" data-card="back5" width="30">
+            <img id = "selected-card-6" src="images/cards/back.png" alt="back" data-card="back6" width="30">
+            <img id = "selected-card-7" src="images/cards/back.png" alt="back" data-card="back7" width="30">
+
+          </div>
+
+        </div>
+        <!-- Assets of playing cards from https://code.google.com/archive/p/vector-playing-cards/ -->
+        <h1>Your Odds: </h1>
+        <h1 id ="he-result" class = "hand-strength-bar"></h1>
+      </div>
+    </div>
+
+    <script src="js/hand_analysis.js"></script>
+    
+    
+</body>
+</html>
+
+
+
+
+
