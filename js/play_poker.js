@@ -128,7 +128,7 @@ var player4 = {
 }
 
 var me = {
-    name: "me",
+    name: "You",
     hand: [],
     chips: 1000,
     bet: 0,
@@ -154,7 +154,10 @@ var pot = {
     main:0,
     side: 0,
 
-    minBet: 0,
+    minBet: 20,
+
+    bigBlind: 20,
+    smallBlind: 10,
         
     potMainDisplay: document.getElementById("pot-$"),
     potSideDisplay: document.getElementById("pot-$-s"),
@@ -579,21 +582,29 @@ async function fold(){
 }
 
 async function check(){
-    console.log("check")
+    console.log("check/call")
 
-    if (pot.minBet > 0){
+    //This is a call
+    if (pot.minBet > me.bet){
         //Player has to call
         me.chips -= pot.minBet;
         pot.chips += pot.minBet;
-        drawChips();
+        me.bet += pot.minBet;
+        drawChips(); 
+        me.turn = false;
+        await displayDialog(me, "Call $"+pot.minBet)
+
+    }else{
+        raiseSelector.style.visibility = "hidden";
+        amountDisplay.style.visibility = "hidden";
+        confirmRaiseButton.style.visibility = "hidden";
+        me.turn = false;
+
+        await displayDialog(me, "Check")
+
     }
 
-    raiseSelector.style.visibility = "hidden";
-    amountDisplay.style.visibility = "hidden";
-    confirmRaiseButton.style.visibility = "hidden";
-    me.turn = false;
 
-    await displayDialog(me, "Check")
 }
 
 async function raise() {
@@ -686,9 +697,11 @@ async function blinds(){
     smallBlindPlayer.card1Display.style.border = "2px solid red";
     smallBlindPlayer.dealerDisplay.innerHTML = "SB"
     await sleep(1000);
+    smallBlindPlayer.bet = pot.smallBlind;
+    smallBlindPlayer.chips -= pot.smallBlind;
+    pot.main += pot.smallBlind;
+    drawChips();
     await displayDialog(smallBlindPlayer, "Small Blind")
-    smallBlindPlayer.bet = 10;
-    smallBlindPlayer.chips -= 10;
     smallBlindPlayer.card2Display.style.border = "none";
     smallBlindPlayer.card1Display.style.border = "none";
 
@@ -697,8 +710,9 @@ async function blinds(){
     bigBlindPlayer.dealerDisplay.innerHTML = "BB"
     await sleep(1000);
     await displayDialog(bigBlindPlayer, "Big Blind")
-    bigBlindPlayer.bet = 20;
-    bigBlindPlayer.chips -= 20;
+    bigBlindPlayer.bet = pot.bigBlind;
+    bigBlindPlayer.chips -= pot.bigBlind;
+    pot.main += pot.bigBlind;
     bigBlindPlayer.card2Display.style.border = "none";
     bigBlindPlayer.card1Display.style.border = "none";
 
@@ -707,52 +721,140 @@ async function blinds(){
     //TODO set big and small blind images
     //TODO raise blind every 10 rounds
 
-    pot.main += 30;
-    
     drawChips();
+}
+
+
+function generateMissingCards(my_cards) {
+    const allUsedCards = new Set([...my_cards]);
+    const ranks = '23456789TJQKA';
+    const suits = 'CDHS';
+    const opp_cards = [];
+
+    // Add initial cards to used cards set
+    my_cards.forEach(card => allUsedCards.add(card));
+
+    // Generate missing cards
+    while (opp_cards.length < 5) {
+        if (opp_cards.length < my_cards.length) {
+        opp_cards.push(my_cards[opp_cards.length]);
+        } else {
+        let card = '';
+        do {
+            const rank = ranks[Math.floor(Math.random() * ranks.length)];
+            const suit = suits[Math.floor(Math.random() * suits.length)];
+            card = rank + suit;
+        } while (allUsedCards.has(card));
+        opp_cards.push(card);
+        allUsedCards.add(card);
+        }
+    }
+
+    return opp_cards;
 }
 
 async function botAction(player){
     console.log("botAction: " + player.name);
     
-    await sleep(1000);
-
-    //Random chance of folding
-    var foldChance = Math.floor(Math.random() * 100);
-    if (foldChance < 20){
-        console.log("BOT FOLDED");
-        //Fold
-        player.folded = true;
-        player.turn = false;
-
-        player.card1Display.style.opacity = 0;
-        player.card2Display.style.opacity = 0;
+    //Evaluate hand
+    var cards = player.hand.concat(communityCards);
+    console.log(cards)
+    var wins = 0; 
+    
+    //Monte carlo hand
+    for (let i=0; i<100000; i++){
+        var my_cards = generateMissingCards(cards);
+        var opp_cards = generateMissingCards(communityCards)
 
 
-        await displayDialog(player, "Fold");
+        var my_cards_value = evaluateHand(my_cards);
+        var opp_cards_value = evaluateHand(opp_cards);
 
+        var res = compareHands(my_cards_value, opp_cards_value);
 
+        if (res){
+            wins++;
+        }
+    }
+    
+    var winPercentage = (wins/100000)*100;
+    console.log("hand: " + player.hand);
+    console.log("winPercentage: " + winPercentage);
+    console.log("pot min bet:" + pot.minBet)
+    
+    await sleep(5000);
+    //random bluff chance
+    var bluffChance = Math.floor(Math.random() * 100);
+    
+    if (bluffChance < 5){
+        winPercentage = 95;
+    }
+    
+    
+    //If win percentage is greater than 80, raise
+    if (winPercentage > 80){
+        //raise
+        var raiseAmount = Math.floor(Math.random() * 100);
+        player.bet += pot.minBet + raiseAmount;
+        player.chips -= pot.minBet + raiseAmount;
+
+        pot.main += pot.minBet + raiseAmount;
+        pot.minBet = player.bet;
+
+        var amountRaised = pot.minBet + raiseAmount;
+        await displayDialog(player, "Raise: $" + amountRaised);
+        drawChips();
+        return;
+    }
+
+    if (winPercentage > 60){
+        //raise
+        var raiseAmount = Math.floor(Math.random() * 50);
+        player.bet += pot.minBet + raiseAmount;
+        player.chips -= pot.minBet + raiseAmount;
+
+        pot.main += pot.minBet + raiseAmount;
+        pot.minBet = player.bet;
+
+        var amountRaised = pot.minBet + raiseAmount;
+        await displayDialog(player, "Raise: $" + amountRaised);
+        drawChips();
+        return;
+    }
+
+    //If win percentage is between 40 and 80, call
+    if (winPercentage > 40 && me.bet != pot.minBet){
+        //call
+        player.bet += pot.minBet;
+        player.chips -= pot.minBet;
+
+        pot.main += pot.minBet;
+        await displayDialog(player, "Call $"+pot.minBet);
+        drawChips();
+        return;
+    }
+
+    
+
+    //If win percentage anything less than 40 and we can check, check
+    if (me.bet == pot.minBet){
+        //Check
+        await displayDialog(player, "Check");
         return;
     }
 
 
-    //Todo: implement bot logic
-    //generate random int between 0 and 100
-    var bet = Math.floor(Math.random() * 100);
+    //Else we fold
+    console.log("BOT FOLDED");
 
-    player.bet += bet;
-    player.chips -= bet;
+    //Fold
+    player.folded = true;
+    player.turn = false;
 
-    //If bet is greater than min bet, add to pot. Else, add min bet to pot
-    if (player.bet > pot.minBet){
-        pot.main += bet;
-        pot.minBet = bet;
+    player.card1Display.style.opacity = 0;
+    player.card2Display.style.opacity = 0;
 
-        await displayDialog(player, "Raise: $" + bet);
-    }else{
-        pot.main += pot.minBet;
-        await displayDialog(player, "Call: $" + bet);
-    }
+    await displayDialog(player, "Fold");
            
     drawChips();
 }
@@ -787,12 +889,12 @@ async function checkForFolded(){
 function displayButtons(){
     foldButton.style.display = "inline-block";
 
-    if (pot.minBet == 0){
+    if (pot.minBet == me.bet){
         checkButton.style.display = "inline-block";
         raiseButton.style.display = "inline-block";
     }
     
-    if (pot.minBet > 0){
+    if (pot.minBet > me.bet){
         //Display Call, fold, raise buttons
         checkButton.innerHTML = "Call $" + pot.minBet;
         checkButton.style.display = "inline-block";
@@ -878,7 +980,7 @@ async function processWinner(){
 
     winner.chips += pot.main;
     pot.main = 0;
-    pot.minBet = 0;
+    pot.minBet = pot.bigBlind;
     pot.side = 0;
 
     drawChips();
@@ -922,7 +1024,6 @@ async function processWinner(){
 
     //Reset deck
     deck.reset();
-        
 
 
 }

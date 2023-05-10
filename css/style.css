@@ -1443,7 +1443,7 @@ adapted from https://freefrontend.com/css-speech-bubbles/
 
 /* My code again */
 #P1-dial{
-  transform: translateX(-65px);
+  transform: translateX(-60px);
 }
 
 #P2-dial{
@@ -1456,7 +1456,7 @@ transform: translateY(-8px);
 
 
 #P4-dial{
-  transform: translateY(-8px);
+  transform: translateY(10px);
 }     
 
 #me-dial{
