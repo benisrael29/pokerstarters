@@ -39,6 +39,7 @@ var player1 = {
     hand: [],
     chips: 1000,
     bet: 0,
+    betThisRound: 0,
     folded: false,
     allIn: false,
     dealer: false,
@@ -62,6 +63,7 @@ var player2 = {
     hand: [],
     chips: 1000,
     bet: 0,
+    betThisRound: 0,
     folded: false,
     allIn: false,
     dealer: false,
@@ -85,6 +87,7 @@ var player3 = {
     hand: [],
     chips: 1000,
     bet: 0,
+    betThisRound: 0,
     folded: false,
     allIn: false,
     dealer: false,
@@ -108,6 +111,7 @@ var player4 = {
     hand: [],
     chips: 1000,
     bet: 0,
+    betThisRound: 0,
     folded: false,
     allIn: false,
     dealer: false,
@@ -132,6 +136,7 @@ var me = {
     hand: [],
     chips: 1000,
     bet: 0,
+    betThisRound: 0,
     folded: false,
     allIn: false,
     dealer: false,
@@ -334,7 +339,7 @@ async function pre_flop(){
     
         }else{
             //BOT action
-            await botAction(actionPlayer);
+            await botAction(actionPlayer, true);
         }
 
 
@@ -344,6 +349,7 @@ async function pre_flop(){
         
     }
     
+    checkRaise();
 
 }
 
@@ -372,6 +378,9 @@ async function flop(){
     communityCard1Display.style.backgroundColor = "white"
     communityCard2Display.style.backgroundColor = "white"
     communityCard3Display.style.backgroundColor = "white"
+
+    //Reset minbet
+    pot.minBet = 0;
     
     for (let i = 0; i < players.length+1; i++) {
         var actionPlayerIndex = (dealerIndex+i+1)%5; //Starts with player to left of big blind
@@ -403,12 +412,6 @@ async function flop(){
                 //wait
                 await sleep(1000);
                 console.log('waiting ${t} sec for player to act');
-                t++;
-                
-                if (t==100){
-                    //Player has timed out
-                    break;
-                }
             }
 
             //Hide buttons
@@ -416,12 +419,14 @@ async function flop(){
             
         }else{
             //BOT action
-            await botAction(actionPlayer);
+            await botAction(actionPlayer, true);
         }
 
-        //Unhighlight player
+        //UnhigcheckRaisehlight player
         actionPlayer.card1Display.style.border = "none";
         actionPlayer.card2Display.style.border = "none";
+
+        checkRaise();
     }
 }
 
@@ -441,7 +446,8 @@ async function turn(){
 
     communityCard4Display.style.backgroundColor = "white"
 
-    
+    //Reset minbet
+    pot.minBet = 0;
 
     for (let i = 0; i < players.length+1; i++) {
         var actionPlayerIndex = (dealerIndex+i+1)%5;
@@ -475,12 +481,6 @@ async function turn(){
                 //wait
                 await sleep(1000);
                 console.log('waiting ${t} sec for player to act');
-                t++;
-                
-                if (t==100){
-                    //Player has timed out
-                    break;
-                }
             }
 
             //Hide buttons
@@ -488,13 +488,14 @@ async function turn(){
             
         }else{
             //BOT action
-            await botAction(actionPlayer);
+            await botAction(actionPlayer, true);
         }
 
         //Unhighlight player
         actionPlayer.card1Display.style.border = "none";
         actionPlayer.card2Display.style.border = "none";
         
+        checkRaise();
     }
 }
 
@@ -502,6 +503,9 @@ async function turn(){
 /* River */
 async function river(){
     console.log("RIVER")
+    
+    //Reset minbet
+    pot.minBet = 0;
 
     //Deal river
     communityCards.push(deck.deal());
@@ -545,12 +549,7 @@ async function river(){
                     //wait
                     await sleep(1000);
                     console.log('waiting ${t} sec for player to act');
-                    t++;
-                    
-                    if (t==100){
-                        //Player has timed out
-                        break;
-                    }
+
                 }
 
                 //Hide buttons
@@ -558,15 +557,55 @@ async function river(){
                 
             }else{
                 //BOT action
-                await botAction(actionPlayer);
+                await botAction(actionPlayer, true);
             }
 
         //Unhighlight player
         actionPlayer.card1Display.style.border = "none";
         actionPlayer.card2Display.style.border = "none";
-            
+
+        checkRaise();
         }
-    }       
+    } 
+    
+    
+async function checkRaise(){
+    //Check if a player has raised if so all players must call or fold
+    for(let i = 0; i < players.length; i++){
+        if(players[i].folded){
+            continue;
+        }
+        
+        if(players[i].betThisRound != pot.minBet){
+
+                        
+            players[i].card1Display.style.border = "2px solid red";
+            players[i].card2Display.style.border = "2px solid red";
+
+            if(players[i] == me){
+                // Display buttons
+                displayButtons();
+
+                //Wait till player presses check, fold, or raise
+                var t=0; 
+                while(players[i].turn){
+                    //wait
+                    await sleep(1000);
+                }
+
+                //Hide buttons
+                hideButtons();
+            }else{
+                //BOT action
+                await botAction(players[i], false);
+            }
+
+            //Unhighlight player
+            players[i].card1Display.style.border = "none";
+            players[i].card2Display.style.border = "none";
+        }
+    }
+}
 
 async function fold(){
     console.log("fold")
@@ -753,7 +792,7 @@ function generateMissingCards(my_cards) {
     return opp_cards;
 }
 
-async function botAction(player){
+async function botAction(player, canRaise){
     console.log("botAction: " + player.name);
     
     //Evaluate hand
@@ -790,56 +829,31 @@ async function botAction(player){
         winPercentage = 95;
     }
     
-    
-    //If win percentage is greater than 80, raise
-    if (winPercentage > 80){
-        //raise
-        var raiseAmount = Math.floor(Math.random() * 100);
-        player.bet += pot.minBet + raiseAmount;
-        player.chips -= pot.minBet + raiseAmount;
+    //If we have a good hand
+    if (winPercentage > 50 && canRaise){
+        console.log("BOT BET");
+        //Bet - 
+        var betAmount = Math.floor(Math.random() * (pot.minBet - pot.minBet/2)) + pot.minBet/2;
+        
+        if (betAmount <pot.minBet){
+            betAmount = pot.minBet;
+        }
 
-        pot.main += pot.minBet + raiseAmount;
-        pot.minBet = player.bet;
-
-        var amountRaised = pot.minBet + raiseAmount;
-        await displayDialog(player, "Raise: $" + amountRaised);
+        betAmount = botBet(player, betAmount);
+        player.turn = false;
+        await displayDialog(player, "Bet $" + betAmount);
         drawChips();
         return;
     }
 
-    if (winPercentage > 60){
-        //raise
-        var raiseAmount = Math.floor(Math.random() * 50);
-        player.bet += pot.minBet + raiseAmount;
-        player.chips -= pot.minBet + raiseAmount;
-
-        pot.main += pot.minBet + raiseAmount;
-        pot.minBet = player.bet;
-
-        var amountRaised = pot.minBet + raiseAmount;
-        await displayDialog(player, "Raise: $" + amountRaised);
+    if (winPercentage > 50 && !canRaise){
+        console.log("BOT CALL");
+        //Call
+        var callAmount = pot.minBet - player.betThisRound;
+        betAmount = botBet(player, callAmount);
+        player.turn = false;
+        await displayDialog(player, "Call $" + betAmount);
         drawChips();
-        return;
-    }
-
-    //If win percentage is between 40 and 80, call
-    if (winPercentage > 40 && me.bet != pot.minBet){
-        //call
-        player.bet += pot.minBet;
-        player.chips -= pot.minBet;
-
-        pot.main += pot.minBet;
-        await displayDialog(player, "Call $"+pot.minBet);
-        drawChips();
-        return;
-    }
-
-    
-
-    //If win percentage anything less than 40 and we can check, check
-    if (me.bet == pot.minBet){
-        //Check
-        await displayDialog(player, "Check");
         return;
     }
 
@@ -857,6 +871,19 @@ async function botAction(player){
     await displayDialog(player, "Fold");
            
     drawChips();
+}
+
+function botBet(player, amount){
+    if (amount > player.chips){
+        amount = player.chips;
+        player.allIn = true;
+    }
+    player.bet += amount;
+    player.chips -= amount;
+    player.betThisRound += amount;
+    pot.main += amount;
+    pot.minBet = player.bet;
+    return amount;
 }
 
 async function displayDialog(player, dialog){
