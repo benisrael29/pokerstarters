@@ -1,7 +1,6 @@
 /* Import deck */
 import {Deck} from "./play_poker_tools/deck.js";
 import {convertHand} from "./play_poker_tools/deck.js";
-
 const deck = new Deck();
 
 //community cards
@@ -12,6 +11,7 @@ const communityCard2Display = document.getElementById("community-card-2");
 const communityCard3Display = document.getElementById("community-card-3");
 const communityCard4Display = document.getElementById("community-card-4");
 const communityCard5Display = document.getElementById("community-card-5");
+const communityCardDisplays = [communityCard1Display, communityCard2Display, communityCard3Display, communityCard4Display, communityCard5Display];
 
 //Dealer Tokens
 const dealer1Display = document.getElementById("dealer-1");
@@ -25,8 +25,12 @@ const dealerDisplays = [dealer1Display, dealer2Display, dealer3Display, dealer4D
 const raiseSelector = document.getElementById("amount");
 const amountDisplay = document.getElementById("amount-to-raise");
 raiseSelector.addEventListener("change", (event) => {
-    amountDisplay.innerHTML = `${event.target.value}`;
+    amountDisplay.innerHTML = `$${event.target.value}`;
   });
+
+var confirmRaise = false;
+const confirmRaiseButton = document.getElementById("confirm-raise-button");
+
 
 
 //Players
@@ -47,6 +51,7 @@ var player1 = {
     card1Display: document.getElementById("P1-card-1"),
     card2Display: document.getElementById("P1-card-2"),
 
+    dealerDisplay: document.getElementById("dealer-1"),
 }
 
 var player2 = {
@@ -65,6 +70,8 @@ var player2 = {
     chipsDisplay: document.getElementById("P2-$"),
     card1Display: document.getElementById("P2-card-1"),
     card2Display: document.getElementById("P2-card-2"),
+
+    dealerDisplay: document.getElementById("dealer-2"),
 }
 
 var player3 = {
@@ -84,6 +91,7 @@ var player3 = {
     card1Display: document.getElementById("P3-card-1"),
     card2Display: document.getElementById("P3-card-2"),
     
+    dealerDisplay: document.getElementById("dealer-3"),
 }
 
 var player4 = {
@@ -103,6 +111,8 @@ var player4 = {
     card1Display: document.getElementById("P4-card-1"),
     card2Display: document.getElementById("P4-card-2"),
 
+
+    dealerDisplay: document.getElementById("dealer-5"),
 }
 
 var me = {
@@ -121,6 +131,8 @@ var me = {
     chipsDisplay: document.getElementById("me-$"),
     card1Display: document.getElementById("me-card-1"),
     card2Display: document.getElementById("me-card-2"),
+
+    dealerDisplay: document.getElementById("dealer-4"),
 }
 
 var pot = {
@@ -136,7 +148,10 @@ var pot = {
 
 //Table
 const players = [player1, player2, player3, me, player4]
-var dealerIndex = 0;
+const winnerDisplay = document.getElementById("winner");
+const popup = document.getElementById("popup-play");
+const popupWinner = document.getElementById("popup-play-winner");
+var dealerIndex = 3;
 
 
 // Action Buttons
@@ -144,6 +159,8 @@ const startGameButton = document.getElementById("start-game-button");
 const foldButton = document.getElementById("fold-button");
 const checkButton = document.getElementById("check-button");
 const raiseButton = document.getElementById("raise-button");
+
+const popupPlayOverlay = document.getElementById("popup-play");
 
 // Buttons -events
 startGameButton.addEventListener("click", beginGame);
@@ -160,8 +177,13 @@ var handNumber = 0;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 var game_in_progress = false;
+var hand_in_progress = false;
 
 async function beginGame(){
+    // remove overlay
+    popupPlayOverlay.style.display = "none";
+
+    //Check for game in progress
     if (game_in_progress){
         console.log("game already in progress");
         return;}
@@ -170,10 +192,14 @@ async function beginGame(){
     startGameButton.style.background = "green";
     game_in_progress = true;
 
+    
+    //draw chips
+    drawChips();
 
     //Play till player runs out of chips
     while(me.chips >= 0){
-
+        //lets play
+        hand_in_progress = true;
         
         dealerIndex = dealerIndex%5;
         console.log("dealerIndex: " + dealerIndex);
@@ -182,23 +208,50 @@ async function beginGame(){
         //set dealer token
 
 
-        blinds();
+        await blinds();
         deck.shuffle();
         deal();
 
         await sleep(1500);
         await pre_flop();
-        
+        if(!hand_in_progress){
+            dealerDisplays[dealerIndex].classList.remove("dealer");
+            handNumber++;
+            dealerIndex++;
+            continue;
+        }
+
+
         await sleep(1500);
         await flop();
+        if(!hand_in_progress){
+            dealerDisplays[dealerIndex].classList.remove("dealer");
+            handNumber++;
+            dealerIndex++;
+            continue;
+        }
         
         await sleep(1500);
         await turn();
+        if(!hand_in_progress){
+            dealerDisplays[dealerIndex].classList.remove("dealer");
+            handNumber++;
+            dealerIndex++;
+            continue;
+        }
         
         await sleep(1500);
         await river();
+        if(!hand_in_progress){
+            dealerDisplays[dealerIndex].classList.remove("dealer");
+            handNumber++;
+            dealerIndex++;
+            continue;
+        }
         
-                
+        await sleep(1500);
+        await showDown();
+        await processWinner();
         //End of hand
         dealerDisplays[dealerIndex].classList.remove("dealer");
         handNumber++;
@@ -212,26 +265,29 @@ async function beginGame(){
     
 }
 
+
+
 /* Pre-flop */
 async function pre_flop(){
     console.log("PRE-FLOP");
 
-    for (let i = 0; i < players.length; i++) {
-        var actionPlayerIndex = (dealerIndex+i)%5;
+    for (let i = 0; i < players.length+1; i++) {
+        var actionPlayerIndex = (dealerIndex+i+3)%5;
         var actionPlayer = players[actionPlayerIndex];
     
         console.log("actionPlayer: " + actionPlayer.name);
         actionPlayer.turn = true;
 
+        //Check if players have folded
+        if (await checkForFolded()){
+            await processWinner();
+            break;
+        }
+        
         //Highlight player
         actionPlayer.card1Display.style.border = "2px solid red";
         actionPlayer.card2Display.style.border = "2px solid red";
     
-        //Check if players have folded
-        if (checkForFolded()){
-            processWinner(actionPlayer);
-            break;
-        }
 
         if(actionPlayer.folded){
             continue;
@@ -295,16 +351,19 @@ async function flop(){
     communityCard2Display.classList.remove('board');
     communityCard3Display.classList.remove('board');
 
+    communityCard1Display.style.backgroundColor = "white"
+    communityCard2Display.style.backgroundColor = "white"
+    communityCard3Display.style.backgroundColor = "white"
     
-    for (let i = 0; i < players.length; i++) {
-        var actionPlayerIndex = (dealerIndex+i)%5;
+    for (let i = 0; i < players.length+1; i++) {
+        var actionPlayerIndex = (dealerIndex+i+1)%5; //Starts with player to left of big blind
         var actionPlayer = players[actionPlayerIndex];
         
         actionPlayer.turn = true;
 
         //Check if players have folded
-        if (checkForFolded()){
-            processWinner(actionPlayer);
+        if (await checkForFolded()){
+            await processWinner();
             break;
         }
 
@@ -361,25 +420,28 @@ async function turn(){
     const communitySrc4 = convertHand(communityCards[3]);
     communityCard4Display.style.backgroundImage = `url("${communitySrc4.replace('"', '\\"')}")`;
     communityCard4Display.classList.remove('board');
+
+    communityCard4Display.style.backgroundColor = "white"
+
     
 
-    for (let i = 0; i < players.length; i++) {
-        var actionPlayerIndex = (dealerIndex+i)%5;
+    for (let i = 0; i < players.length+1; i++) {
+        var actionPlayerIndex = (dealerIndex+i+1)%5;
         var actionPlayer = players[actionPlayerIndex];
     
         console.log("actionPlayer: " + actionPlayer.name);
         actionPlayer.turn = true;
+
+        //Check if players have folded
+        if (await checkForFolded()){
+            await processWinner();
+            break;
+        }
         
 
         //Highlight player
         actionPlayer.card1Display.style.border = "2px solid red";
         actionPlayer.card2Display.style.border = "2px solid red";
-
-        //Check if players have folded
-        if (checkForFolded()){
-            processWinner(actionPlayer);
-            break;
-        }
 
         if(actionPlayer.folded){
             continue;
@@ -430,9 +492,11 @@ async function river(){
     const communitySrc5 = convertHand(communityCards[4]);
     communityCard5Display.style.backgroundImage = `url("${communitySrc5.replace('"', '\\"')}")`;
     communityCard5Display.classList.remove('board');
+    communityCard5Display.style.backgroundColor = "white"
+
     
-        for (let i = 0; i < players.length; i++) {
-            var actionPlayerIndex = (dealerIndex+i)%5;
+        for (let i = 0; i < players.length+1; i++) {
+            var actionPlayerIndex = (dealerIndex+i+1)%5;
             var actionPlayer = players[actionPlayerIndex];
             
             console.log("actionPlayer: " + actionPlayer.name);
@@ -443,8 +507,8 @@ async function river(){
             actionPlayer.card2Display.style.border = "2px solid red";
             
             //Check if players have folded
-            if (checkForFolded()){
-                processWinner(actionPlayer);
+            if (await checkForFolded()){
+                await processWinner();
                 break;
             }
 
@@ -489,7 +553,12 @@ async function river(){
 function fold(){
     console.log("fold")
     me.folded = true;
-    me.turn = false;
+
+    raiseSelector.style.visibility = "hidden";
+    amountDisplay.style.visibility = "hidden";
+    confirmRaiseButton.style.visibility = "hidden";
+    me.turn = false;    
+
 }
 
 function check(){
@@ -501,15 +570,47 @@ function check(){
         pot.chips += pot.minBet;
         drawChips();
     }
-    
+
+    raiseSelector.style.visibility = "hidden";
+    amountDisplay.style.visibility = "hidden";
+    confirmRaiseButton.style.visibility = "hidden";
     me.turn = false;
 }
 
-function raise(){
-    console.log("raise")
-    me.turn = false;
-}
+function raise() {
+    raiseSelector.style.visibility = "visible";
+    amountDisplay.style.visibility = "visible";
+    confirmRaiseButton.style.visibility = "visible";
+    amountDisplay.innerHTML = "$50"
+  
+    return new Promise((resolve, reject) => {
+      confirmRaiseButton.addEventListener("click", () => {
+        const amount = raiseSelector.value;
+        console.log(`User selected to raise ${amount}`);
+  
+        raiseSelector.style.visibility = "hidden";
+        amountDisplay.style.visibility = "hidden";
+        confirmRaiseButton.style.visibility = "hidden";
+  
+        resolve(amount);
+      });
+  
+      // You can add a similar event listener to handle the cancel button if needed
+    }).then((amount) => {
+      // The user confirmed the raise
+      pot.main += parseInt(amount);
+      pot.minBet = parseInt(amount);
 
+      me.chips -= pot.minBet;
+      drawChips();
+      me.turn = false;
+    }).catch(() => {
+      raiseSelector.style.visibility = "hidden";
+      amountDisplay.style.visibility = "hidden";
+      confirmRaiseButton.style.visibility = "hidden";
+      me.turn = true;
+    });
+  }
 
 function deal(){
     player1.hand.push(deck.deal());
@@ -546,20 +647,42 @@ function drawChips(){
 }
 
 
-function blinds(){
+async function blinds(){
+
+
     var bigBlindPlayer = players[(dealerIndex + 2)%5];
     var smallBlindPlayer = players[(dealerIndex + 1)%5];
+    
+    console.log("blinds:")
+    console.log("bigBlindPlayer: " + bigBlindPlayer.name);
+    console.log("smallBlindPlayer: " + smallBlindPlayer.name);
 
     bigBlindPlayer.bigBlind = true;
     smallBlindPlayer.smallBlind = true;
 
-    bigBlindPlayer.bet = 20;
+    //Highlight and set bet
+    smallBlindPlayer.card2Display.style.border = "2px solid red";
+    smallBlindPlayer.card1Display.style.border = "2px solid red";
+    smallBlindPlayer.dealerDisplay.innerHTML = "SB"
+    await sleep(1000);
     smallBlindPlayer.bet = 10;
-
-    bigBlindPlayer.chips -= 20;
     smallBlindPlayer.chips -= 10;
+    smallBlindPlayer.card2Display.style.border = "none";
+    smallBlindPlayer.card1Display.style.border = "none";
+
+    bigBlindPlayer.card2Display.style.border = "2px solid red";
+    bigBlindPlayer.card1Display.style.border = "2px solid red";
+    bigBlindPlayer.dealerDisplay.innerHTML = "BB"
+    await sleep(1000);
+    bigBlindPlayer.bet = 20;
+    bigBlindPlayer.chips -= 20;
+    bigBlindPlayer.card2Display.style.border = "none";
+    bigBlindPlayer.card1Display.style.border = "none";
+
+
 
     //TODO set big and small blind images
+    //TODO raise blind every 10 rounds
 
     pot.main += 30;
     
@@ -571,12 +694,26 @@ async function botAction(player){
     
     await sleep(1000);
 
+    //Random chance of folding
+    var foldChance = Math.floor(Math.random() * 100);
+    if (foldChance < 20){
+        console.log("BOT FOLDED");
+        //Fold
+        player.folded = true;
+        player.turn = false;
+
+        player.card1Display.style.opacity = 0;
+        player.card2Display.style.opacity = 0;
+
+        return;
+    }
+
 
     //Todo: implement bot logic
     //generate random int between 0 and 100
     var bet = Math.floor(Math.random() * 100);
 
-    player.bet = bet;
+    player.bet += bet;
     player.chips -= bet;
 
     //If bet is greater than min bet, add to pot. Else, add min bet to pot
@@ -587,11 +724,10 @@ async function botAction(player){
         pot.main += pot.minBet;
     }
            
-    
     drawChips();
 }
 
-function checkForFolded(){
+async function checkForFolded(){
     //Returns true if all players have folded except one
     var numFolded = 0;
     for (let i = 0; i < players.length; i++) {
@@ -600,18 +736,12 @@ function checkForFolded(){
         }
     }
     if(numFolded == 4){
+        showDown();
+        hand_in_progress = false;
         return true;
     }else{
         return false;
     }
-}
-
-
-function processWinner(player){
-    console.log("processWinner: " + player.name);
-    player.chips += pot.main;
-    pot.main = 0;
-    drawChips();
 }
 
 
@@ -641,3 +771,243 @@ function hideButtons(){
     foldButton.style.display = "none";
     raiseButton.style.display = "none";
 }
+
+
+async function showDown(){
+    console.log("showDown");
+
+    //Show all cards expect folded players
+    for (let i = 0; i < players.length; i++) {
+        if (players[i].folded){
+            continue;
+        }
+
+        players[i].card1Display.style.backgroundImage = `url("${convertHand(players[i].hand[0]).replace('"', '\\"')}")`;
+        players[i].card2Display.style.backgroundImage = `url("${convertHand(players[i].hand[1]).replace('"', '\\"')}")`;
+    }
+
+
+    //For each player, check if they have the best hand
+    var bestPlayer = null;
+    var bestHand = null;
+    for (let i = 0; i < players.length; i++) {
+
+        //Skip folded players
+        if(players[i].folded){
+            continue;
+        }
+
+        if (bestPlayer == null){
+            bestPlayer = players[i];
+            bestHand = players[i].hand + communityCards;
+        }
+
+        var playersHand = players[i].hand + communityCards;
+        var rankOfPlayersHand = evaluateHand(playersHand);
+        var rankOfBestHand = evaluateHand(bestHand);
+
+        if (compareHands(rankOfPlayersHand, rankOfBestHand)){
+            bestPlayer = players[i];
+            bestHand = playersHand;
+        }
+    }
+
+    console.log(bestPlayer.name + " wins with " + bestHand);
+    var winningHand = await evaluateHand(bestHand);
+
+
+    //Display winner
+    popupWinner.style.display = "block";
+    popupWinner.innerHTML = bestPlayer.name + " wins $" + pot.main+ " with " + winningHand.description;
+    
+    //Wait 5 seconds
+    await sleep(5000);
+
+    //Hide popup
+    popupWinner.style.display = "none";
+
+    return bestPlayer;
+        
+}
+
+
+async function processWinner(){
+    console.log("processing Winner")
+    var winner = await showDown();
+
+    console.log("processWinner: " + winner.name);
+
+    winner.chips += pot.main;
+    pot.main = 0;
+    pot.minBet = 0;
+    pot.side = 0;
+
+    drawChips();
+
+    //Reset bets, folded and hands
+    //hide cards
+    for (let i = 0; i < players.length; i++) {
+        players[i].bet = 0;
+        players[i].folded = false;
+        players[i].hand = [];
+
+        //Hide cards
+        players[i].card1Display.style.backgroundImage = `url("images/cards/back.png")`;
+        players[i].card2Display.style.backgroundImage = `url("images/cards/back.png")`;
+        players[i].card1Display.style.opacity = 1;
+        players[i].card2Display.style.opacity = 1;
+
+        //Reset blinds
+        players[i].bigBlind = false;
+        players[i].smallBlind = false;
+
+        console.log(players[i].name);
+        players[i].dealerDisplay.innerHTML = "";
+
+        players[i].card2Display.style.border = "none";
+        players[i].card1Display.style.border = "none";
+
+    }
+
+
+    //Reset community cards
+    communityCards = [];
+
+    //Hide all community cards
+    for (let i = 0; i < communityCardDisplays.length; i++) {
+        communityCardDisplays[i].style.backgroundImage = `none`;
+        communityCardDisplays[i].classList.add("board")
+        communityCardDisplays[i].style.backgroundColor = "chartreuse"
+    }
+
+
+    //Reset deck
+    deck.reset();
+        
+
+
+}
+
+
+
+/* Evaluation Functions */
+ 
+function evaluateHand(cards) {
+    const ranks = '23456789TJQKA';
+    const suits = 'CDHS';
+    
+    // Count occurrences of each rank and suit
+    const rankCounts = new Array(13).fill(0);
+    const suitCounts = new Array(4).fill(0);
+    
+    for (const card of cards) {
+      const rankIndex = ranks.indexOf(card[0]); //look up the rank index
+      const suitIndex = suits.indexOf(card[1]); // look up the suit index
+      rankCounts[rankIndex]++; //add it accordingly 
+      suitCounts[suitIndex]++;
+    }
+    
+    /* Check for a flush */
+    let isFlush = false;
+    for (let i = 0; i < suitCounts.length; i++) {
+      if (suitCounts[i] >= 5) {
+        isFlush = true;
+        break;
+      }
+    }
+  
+    const isStraight = findStraight(rankCounts);
+  
+    const countsSortedByFrequency = rankCounts.slice().sort((a, b) => b - a);
+    const primaryRank = countsSortedByFrequency[0];
+    const secondaryRank = countsSortedByFrequency[1];
+    
+    //Sort hand by rank
+    const sortedRanks = [];
+    for (let i = 0; i < rankCounts.length; i++) {
+      if (rankCounts[i] > 0) {
+        sortedRanks.push(i);
+      }
+    }
+    sortedRanks.sort((a, b) => b - a);
+  
+    if (isFlush && isStraight) {
+      return { handRank: 8, primaryRank, secondaryRank,sortedRanks, description:"Straight Flush" }; // Straight flush
+    }
+  
+    if (primaryRank === 4) {
+      return { handRank: 7, primaryRank, secondaryRank,sortedRanks, description:"Four of a Kind" }; // Four of a kind
+    }
+    
+    if (primaryRank === 3 && secondaryRank === 2) {
+      return { handRank: 6, primaryRank, secondaryRank,sortedRanks, description: "Full House" }; // Full house
+    }
+    
+    if (isFlush) {
+      return { handRank: 5, primaryRank, secondaryRank,sortedRanks, description:"Flush" }; // Flush
+    }
+    
+    if (isStraight) {
+      return { handRank: 4, primaryRank, secondaryRank,sortedRanks, description:"Straight" }; // Straight
+    }
+    
+    if (primaryRank === 3) {
+      return { handRank: 3, primaryRank, secondaryRank,sortedRanks, description:"Three of a kind" }; // Three of a kind
+    }
+    
+    if (primaryRank === 2 && secondaryRank === 2) {
+      return { handRank: 2, primaryRank, secondaryRank ,sortedRanks, description: "Two Pair"}; // Two pair
+    }
+    
+    if (primaryRank === 2) {
+      return { handRank: 1, primaryRank, secondaryRank,sortedRanks, description:"One Pair"}; // One pair
+    }
+    
+    return { handRank: 0, primaryRank, secondaryRank,sortedRanks, description: "a High Card" }; // High card
+  }
+  
+  function findStraight(rankCounts) {
+    const consecutiveRanks = rankCounts.concat(rankCounts.slice(0, 1)); // Account for ace-low straights (A-2-3-4-5)
+    let consecutiveCount = 0;
+    for (const count of consecutiveRanks) {
+      consecutiveCount = count > 0 ? consecutiveCount + 1 : 0;
+      if (consecutiveCount >= 5) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  function compareHands(my_hand, opp_hand) {
+    if (my_hand.handRank > opp_hand.handRank) {
+      return true;
+    } else if (my_hand.handRank < opp_hand.handRank) {
+      return false;
+    } else {
+      // Hands have the same rank, so we need to compare the primary and secondary ranks to break the tie.
+      if (my_hand.primaryRank > opp_hand.primaryRank) {
+        return true;
+      } else if (my_hand.primaryRank < opp_hand.primaryRank) {
+        return false;
+      } else {
+        // Primary ranks are also the same, so compare the secondary ranks.
+        if (my_hand.secondaryRank > opp_hand.secondaryRank) {
+          return true;
+        } else if (my_hand.secondaryRank < opp_hand.secondaryRank) {
+          return false;
+        } else {
+          // If both primary and secondary ranks are the same, the hands are tied.
+          //We need to evaluate the high cards using the sorted rank attribute. 
+          for (let i = 0; i < my_hand.sortedRanks.length; i++) {
+            if (my_hand.sortedRanks[i] > opp_hand.sortedRanks[i]) {
+              return true;
+            } else if (my_hand.sortedRanks[i] < opp_hand.sortedRanks[i]) {
+              return false;
+            }
+          }
+          //If all are equal we will just true for a split pot
+          return true;
+        }
+      }
+    }
+  }

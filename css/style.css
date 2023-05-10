@@ -1166,12 +1166,34 @@ button:hover {
   align-items: center;
   height: 90px;
   width: 60px;
-  background-color: white;
   border: 1px solid black;
   font-size: 24px;
   font-weight: bold;
   border-radius: 5px;
 }
+
+
+#P1-card-2 {  background-color: white;}
+#P2-card-1 {  background-color: white;}
+#P2-card-2 {  background-color: white;}
+#P3-card-1 {  background-color: white;}
+#P3-card-2{  background-color: white;}
+#P4-card-1{  background-color: white;}
+#P4-card-2 {  background-color: white;}
+
+/* #community-card-1 {  background-color: white;}
+#community-card-2 {  background-color: white;}
+#community-card-3 {  background-color: white;}
+#community-card-4 {  background-color: white;}
+#community-card-5 {  background-color: white;} */
+
+ #me-card-1 {
+  background-color: white;
+ }
+
+  #me-card-2 {
+    background-color: white;
+  }
 
 .board{
   background-color: chartreuse;
@@ -1259,16 +1281,50 @@ button:hover {
 
 #amount{
   max-height: 90%;
-  background-color: #bb4949;
-  color: #bb4949;
+  visibility: hidden;
 }
 
+#confirm-raise-button{
+  background-color: #686666;
+  color: #ffffff;
+  visibility: hidden;
+}
+
+#confirm-raise-button:hover{
+  background-color: #1b489b;
+  color: #ffffff;
+  visibility: hidden;
+}
 #amount-to-raise{
-  background-color: #bb4949;
   color: #646363;
+  visibility: hidden;
 }
 
-#raise-button{
+#popup-play{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 720px;
+  width: 780px;
+  background-color:  rgba(128, 127, 127, 0.8);
+  border-radius: 5px;
+
+}
+
+#popup-play-winner{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 400px;
+  top: 200px;
+  height: 100px;
+  width: 200px;
+  background-color:  rgba(128, 127, 127, 0.8);
+  border-radius: 5px;
+  display: none;
+
 }
 
 .button{
@@ -1278,16 +1334,27 @@ button:hover {
 }
 
 #start-game-button{
-  background-color: #bb4949;
-  height: 100%;
+  background-color: #329750;
+  width: 200px;
+  height: 100px;
   text-align: center;
+  font-size: 25px;
+  border-radius: 5px;
+  box-shadow: #6b6b6b 0px 0px 10px;
 }
 #start-game-button:hover{
-  background-color: #329750;
+  background-color: #558a47;
 }
 
 .grid{
   background-color: #686666;
   height: 100%;
   text-align: center;
+}
+
+.char{
+  background-image: url('../images/person.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }

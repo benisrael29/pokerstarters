@@ -89,7 +89,7 @@ function displayHandStrength() {
     //randomly choose an opponents hand
     opp_cards = generateRandomOpponentHand(my_cards, community_cards)
 
-    res = eval(my_cards, opp_cards, community_cards)
+    res = evalHands(my_cards, opp_cards, community_cards)
     
     // if a win add to the number of winners
     if(res){number_of_winners++}
@@ -148,16 +148,16 @@ function generateMissingCommunityCards(my_cards, community_cards){
 
 
 
-function eval(my_cards, opp_cards, community_cards){
+function evalHands(my_cards, opp_cards, community_cards){
 
-    const all_my_cards = my_cards.concat(community_cards);
-    const all_opp_cards = opp_cards.concat(community_cards);
-    const my_hand = evaluateHand(all_my_cards);
-    const opp_hand = evaluateHand(all_opp_cards);
-    
-    return compareHands(my_hand, opp_hand);
-    
-  }
+  const all_my_cards = my_cards.concat(community_cards);
+  const all_opp_cards = opp_cards.concat(community_cards);
+  const my_hand = evaluateHand(all_my_cards);
+  const opp_hand = evaluateHand(all_opp_cards);
+  
+  return compareHands(my_hand, opp_hand);
+  
+}
   
   
 function evaluateHand(cards) {
@@ -200,7 +200,7 @@ function evaluateHand(cards) {
   sortedRanks.sort((a, b) => b - a);
 
   if (isFlush && isStraight) {
-    return { handRank: 8, primaryRank, secondaryRank,sortedRanks }; // Straight flush
+    return { handRank: 8, primaryRank, secondaryRank,sortedRanks}; // Straight flush
   }
 
   if (primaryRank === 4) {
@@ -289,3 +289,5 @@ function hasNull(list) {
   }
   return false;
 }
+
+
