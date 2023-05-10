@@ -52,6 +52,9 @@ var player1 = {
     card2Display: document.getElementById("P1-card-2"),
 
     dealerDisplay: document.getElementById("dealer-1"),
+
+    //Dialog
+    dialog: document.getElementById("P1-dial"),
 }
 
 var player2 = {
@@ -72,6 +75,9 @@ var player2 = {
     card2Display: document.getElementById("P2-card-2"),
 
     dealerDisplay: document.getElementById("dealer-2"),
+
+    //Dialog
+    dialog: document.getElementById("P2-dial"),
 }
 
 var player3 = {
@@ -92,6 +98,9 @@ var player3 = {
     card2Display: document.getElementById("P3-card-2"),
     
     dealerDisplay: document.getElementById("dealer-3"),
+
+    //Dialog
+    dialog: document.getElementById("P3-dial"),
 }
 
 var player4 = {
@@ -113,6 +122,9 @@ var player4 = {
 
 
     dealerDisplay: document.getElementById("dealer-5"),
+
+    //Dialog
+    dialog: document.getElementById("P4-dial"),
 }
 
 var me = {
@@ -133,6 +145,9 @@ var me = {
     card2Display: document.getElementById("me-card-2"),
 
     dealerDisplay: document.getElementById("dealer-4"),
+
+    //Dialog
+    dialog: document.getElementById("me-dial"),
 }
 
 var pot = {
@@ -550,7 +565,7 @@ async function river(){
         }
     }       
 
-function fold(){
+async function fold(){
     console.log("fold")
     me.folded = true;
 
@@ -559,9 +574,11 @@ function fold(){
     confirmRaiseButton.style.visibility = "hidden";
     me.turn = false;    
 
+    await displayDialog(me, "Fold")
+
 }
 
-function check(){
+async function check(){
     console.log("check")
 
     if (pot.minBet > 0){
@@ -575,9 +592,11 @@ function check(){
     amountDisplay.style.visibility = "hidden";
     confirmRaiseButton.style.visibility = "hidden";
     me.turn = false;
+
+    await displayDialog(me, "Check")
 }
 
-function raise() {
+async function raise() {
     raiseSelector.style.visibility = "visible";
     amountDisplay.style.visibility = "visible";
     confirmRaiseButton.style.visibility = "visible";
@@ -604,6 +623,8 @@ function raise() {
       me.chips -= pot.minBet;
       drawChips();
       me.turn = false;
+      displayDialog(me, "Raise $" + amount)
+
     }).catch(() => {
       raiseSelector.style.visibility = "hidden";
       amountDisplay.style.visibility = "hidden";
@@ -665,6 +686,7 @@ async function blinds(){
     smallBlindPlayer.card1Display.style.border = "2px solid red";
     smallBlindPlayer.dealerDisplay.innerHTML = "SB"
     await sleep(1000);
+    await displayDialog(smallBlindPlayer, "Small Blind")
     smallBlindPlayer.bet = 10;
     smallBlindPlayer.chips -= 10;
     smallBlindPlayer.card2Display.style.border = "none";
@@ -674,6 +696,7 @@ async function blinds(){
     bigBlindPlayer.card1Display.style.border = "2px solid red";
     bigBlindPlayer.dealerDisplay.innerHTML = "BB"
     await sleep(1000);
+    await displayDialog(bigBlindPlayer, "Big Blind")
     bigBlindPlayer.bet = 20;
     bigBlindPlayer.chips -= 20;
     bigBlindPlayer.card2Display.style.border = "none";
@@ -705,6 +728,10 @@ async function botAction(player){
         player.card1Display.style.opacity = 0;
         player.card2Display.style.opacity = 0;
 
+
+        await displayDialog(player, "Fold");
+
+
         return;
     }
 
@@ -720,11 +747,23 @@ async function botAction(player){
     if (player.bet > pot.minBet){
         pot.main += bet;
         pot.minBet = bet;
+
+        await displayDialog(player, "Raise: $" + bet);
     }else{
         pot.main += pot.minBet;
+        await displayDialog(player, "Call: $" + bet);
     }
            
     drawChips();
+}
+
+async function displayDialog(player, dialog){
+
+    player.dialog.innerHTML = dialog;
+    player.dialog.classList.add("visible")
+    await sleep(1000);
+    player.dialog.classList.remove("visible")
+    
 }
 
 async function checkForFolded(){

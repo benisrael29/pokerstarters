@@ -1166,34 +1166,22 @@ button:hover {
   align-items: center;
   height: 90px;
   width: 60px;
-  border: 1px solid black;
   font-size: 24px;
   font-weight: bold;
-  border-radius: 5px;
+  overflow: visible;
 }
 
+#P1-card-1 {border-radius: 5px; box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.2);  background-color: white;}
+#P1-card-2 {border-radius: 5px; box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.2);  background-color: white;}
+#P2-card-1 {border-radius: 5px; box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.2);  background-color: white;}
+#P2-card-2 {border-radius: 5px; box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.2);  background-color: white;}
+#P3-card-1 {border-radius: 5px; box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.2);  background-color: white;}
+#P3-card-2 {border-radius: 5px; box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.2);  background-color: white;}
+#P4-card-1 {border-radius: 5px; box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.2);  background-color: white;}
+#P4-card-2 {border-radius: 5px; box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.2);  background-color: white;}
+#me-card-1 {border-radius: 5px; box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.2);  background-color: white;}
+#me-card-2 {border-radius: 5px; box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.2);  background-color: white;}
 
-#P1-card-2 {  background-color: white;}
-#P2-card-1 {  background-color: white;}
-#P2-card-2 {  background-color: white;}
-#P3-card-1 {  background-color: white;}
-#P3-card-2{  background-color: white;}
-#P4-card-1{  background-color: white;}
-#P4-card-2 {  background-color: white;}
-
-/* #community-card-1 {  background-color: white;}
-#community-card-2 {  background-color: white;}
-#community-card-3 {  background-color: white;}
-#community-card-4 {  background-color: white;}
-#community-card-5 {  background-color: white;} */
-
- #me-card-1 {
-  background-color: white;
- }
-
-  #me-card-2 {
-    background-color: white;
-  }
 
 .board{
   background-color: chartreuse;
@@ -1209,6 +1197,9 @@ button:hover {
 #deck{
   background-image: url('../images/cards/back.png');
   background-size: contain;
+  border-radius: 5px; 
+  box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.2);
+  background-color: chartreuse;
 }
 
 #P1-card-1{
@@ -1263,19 +1254,24 @@ button:hover {
 }
 
 #community-card-1{
+  border-radius: 5px; 
   background-size:contain
 }
 
 #community-card-2{
+  border-radius: 5px; 
   background-size:contain
 }
 #community-card-3{
+  border-radius: 5px; 
   background-size:contain
 }
 #community-card-4{
+  border-radius: 5px; 
   background-size:contain
 }
 #community-card-5{
+  border-radius: 5px;  
   background-size:contain
 }
 
@@ -1317,11 +1313,11 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  left: 400px;
-  top: 200px;
+  left: 300px;
+  top: 400px;
   height: 100px;
   width: 200px;
-  background-color:  rgba(128, 127, 127, 0.8);
+  background-color:  rgba(190, 188, 188, 0.8);
   border-radius: 5px;
   display: none;
 
@@ -1331,6 +1327,9 @@ button:hover {
   background-color: #686666;
   height: 100%;
   text-align: center;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin: 1px;
 }
 
 #start-game-button{
@@ -1346,15 +1345,133 @@ button:hover {
   background-color: #558a47;
 }
 
-.grid{
-  background-color: #686666;
-  height: 100%;
-  text-align: center;
-}
+
 
 .char{
   background-image: url('../images/person.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+
+/* NOT MY CODE
+adapted from https://freefrontend.com/css-speech-bubbles/
+
+*/
+/* (A) SPEECH BOX */
+.speech {
+  /* (A1) FONT */
+   font-size: 1.1em;
+ 
+  /* (A2) COLORS */
+  color: #fff;
+  background: #a53d38;
+ 
+  /* (A3) DIMENSIONS + POSITION */
+  position: absolute;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 50px auto;
+  max-width: 320px;
+}
+
+/* (B) ADD SPEECH "CALLOUT TAIL" */
+/* (B1) USE ::AFTER TO CREATE THE "TAIL" */
+.speech::after {
+  /* (B1-1) ATTACH TRANSPARENT BORDERS */
+  content: "";
+  border: 20px solid transparent;
+ 
+  /* (B1-2) NECESSARY TO POSITION THE "TAIL" */
+  position: absolute;
+}
+ 
+/* (B2) BOTTOM "CALLOUT TAIL" */
+.bottom.speech::after {
+  /* (B2-1) DOWN TRIANGLE */
+  border-top-color: #a53d38;
+  border-bottom: 0;
+ 
+  /* (B2-2) POSITION AT BOTTOM */
+  bottom: -20px; left: 50%;
+  margin-left: -20px;
+}
+
+/* (C) DIFFERENT TAIL POSITIONS */
+/* (C1) TOP */
+.top.speech::after {
+  /* (C1-1) UP TRIANGLE */
+  border-bottom-color: #a53d38;
+  border-top: 0;
+ 
+  /* (C1-2) POSITION AT TOP */
+  top: -20px; left: 50%;
+  margin-left: -20px;
+}
+ 
+/* (C2) LEFT */
+.left.speech::after {
+  /* (C2-1) LEFT TRIANGLE */
+  border-right-color: #a53d38;
+  border-left: 0;
+ 
+  /* (C2-2) POSITION AT LEFT */
+  left: -20px; top: 50%;
+  margin-top: -20px;
+}
+ 
+/* (C3) RIGHT */
+.right.speech::after {
+  /* (C3-1) RIGHT TRIANGLE */
+  border-left-color: #a53d38;
+  border-right: 0;
+ 
+  /* (C3-2) POSITION AT RIGHT */
+  right: -20px; top: 50%;
+  margin-top: -20px;
+}
+
+
+/* SVG */
+#talk {
+  width: 100%; height:120px;
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 512 512" width="100" xmlns="http://www.w3.org/2000/svg"><path d="M448 0H64C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h96v84c0 9.8 11.2 15.5 19.1 9.7L304 416h144c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64z" /></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* My code again */
+#P1-dial{
+  transform: translateX(-65px);
+}
+
+#P2-dial{
+  transform: translateX(-60px);
+}
+
+#P3-dial{
+transform: translateY(-8px);
+}
+
+
+#P4-dial{
+  transform: translateY(-8px);
+}     
+
+#me-dial{
+  transform: translateX(-40px);
+}
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+}
+
+.fade.hidden {
+  opacity: 0;
 }
