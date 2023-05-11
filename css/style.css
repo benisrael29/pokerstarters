@@ -997,6 +997,37 @@ button:hover {
   background-image: url('../images/cards/10_of_hearts.png');
 }
 
+/* other variants */
+.card20 {
+  top: 10px;
+  left: 20px;
+  background-image: url('../images/cards/2_of_diamonds.png');
+}
+
+.card21 {
+  top: 10px;
+  left: 20px;
+  background-image: url('../images/cards/2_of_hearts.png');
+}
+
+.card22 {
+  top: 10px;
+  left: 20px;
+  background-image: url('../images/cards/2_of_clubs.png');
+}
+
+.card23 {
+  top: 10px;
+  left: 20px;
+  background-image: url('../images/cards/2_of_spades.png');
+}
+
+.card24 {
+  top: 10px;
+  left: 20px;
+  background-image: url('../images/cards/3_of_diamonds.png');
+}
+
 
 /* Rules grid items */
 

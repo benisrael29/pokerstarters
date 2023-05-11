@@ -27,10 +27,19 @@ var card18 = document.querySelector('.card18');
 var card19 = document.querySelector('.card19');
 
 
+/* Variants */
+var card20 = document.querySelector('.card20');
+var card21 = document.querySelector('.card21');
+var card22 = document.querySelector('.card22');
+var card23 = document.querySelector('.card23');
+var card24 = document.querySelector('.card24');
+
+
 var texas_flopButton = document.querySelector('#table-texas');
 var omaha_flopButton = document.querySelector('#table-omaha');
 var stud_flopButton = document.querySelector('#table-stud');
 var two7_flopButton = document.querySelector('#table-2-7');
+var variants_flopButton = document.querySelector('#table-variants');
 
 var texas_done = false; 
 texas_flopButton.addEventListener('click', function() {
@@ -317,6 +326,82 @@ two7_flopButton.addEventListener('click', function() {
     }, delay + 300);
 
     two7 = false;
+    return
+  }
+
+});
+
+
+/* Other variants */
+var variants =false;
+variants_flopButton.addEventListener('click', function() {
+  var duration = 1000; // in milliseconds
+  var delay = 0;
+
+  if (variants == false){
+    
+    // animate card 1
+    setTimeout(function() {
+      card20.style.transform = 'translate(10px, 100px)';
+      card20.style.left = parseInt(card1.style.left) - 50 + 'px';
+    }, delay);
+    
+    // animate card 2
+    setTimeout(function() {
+      card21.style.transform = 'translate(60px, 100px)';
+      card21.style.left = parseInt(card2.style.left) - 25 + 'px';
+    }, delay + 100);
+    
+    // animate card 3
+    setTimeout(function() {
+      card22.style.transform = 'translate(110px, 100px)';
+    }, delay + 200);
+  
+  // animate card 3
+  setTimeout(function() {
+      card23.style.transform = 'translate(160px, 100px)';
+      }, delay + 200);
+  
+          // animate card 3
+    setTimeout(function() {
+      card24.style.transform = 'translate(210px, 100px)';
+    }, delay + 200);
+  
+  
+              
+    variants = true; 
+    return
+
+  }else{
+    
+    // animate card 1
+    setTimeout(function() {
+      card20.style.transform = 'translate(-0, -0)';
+      card20.style.left = parseInt(card1.style.left) - 50 + 'px';
+    }, delay);
+    
+    // animate card 2
+    setTimeout(function() {
+      card21.style.transform = 'translate(-0, -0)';
+      card21.style.left = parseInt(card2.style.left) - 25 + 'px';
+    }, delay + 100);
+    
+    // animate card 3
+    setTimeout(function() {
+      card22.style.transform = 'translate(-0, 0)';
+    }, delay + 200);
+  
+  // animate card 3
+  setTimeout(function() {
+      card23.style.transform = 'translate(-0, 0)';
+      }, delay + 300);
+  
+          // animate card 3
+    setTimeout(function() {
+      card24.style.transform = 'translate(-0, 0)';
+    }, delay + 300);
+
+    variants = false;
     return
   }
 
