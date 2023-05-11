@@ -1,3 +1,5 @@
+/* Adapted from: https://jqueryui.com/sortable/ */
+
 $(document).ready(function () {
     $("#grid-container").sortable({
       handle: ".grid-header",

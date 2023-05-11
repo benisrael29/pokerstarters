@@ -349,8 +349,8 @@ async function pre_flop(){
         
     }
     
-    checkRaise();
-
+/*     checkRaise();
+ */ 
 }
 
 
@@ -426,8 +426,8 @@ async function flop(){
         actionPlayer.card1Display.style.border = "none";
         actionPlayer.card2Display.style.border = "none";
 
-        checkRaise();
-    }
+/*         checkRaise();
+ */    }
 }
 
 
@@ -495,8 +495,8 @@ async function turn(){
         actionPlayer.card1Display.style.border = "none";
         actionPlayer.card2Display.style.border = "none";
         
-        checkRaise();
-    }
+/*         checkRaise();
+ */    }
 }
 
 
@@ -564,47 +564,83 @@ async function river(){
         actionPlayer.card1Display.style.border = "none";
         actionPlayer.card2Display.style.border = "none";
 
-        checkRaise();
-        }
+/*         checkRaise();
+ */        }
     } 
     
     
 async function checkRaise(){
-    //Check if a player has raised if so all players must call or fold
+    var allPlayersChecked = false;
+
+
+    while (!allPlayersChecked){
+        console.log("checkRaise")
+        //Check if a player has raised if so all players must call or fold
+        for(let i = 0; i < players.length; i++){
+            if(players[i].folded){
+                continue;
+            }
+            
+            if(players[i].betThisRound < pot.minBet){
+
+                            
+                players[i].card1Display.style.border = "2px solid red";
+                players[i].card2Display.style.border = "2px solid red";
+
+                if(players[i] == me){
+                    // Display buttons
+                    displayButtons();
+
+                    //Wait till player presses check, fold, or raise
+                    var t=0; 
+                    while(players[i].turn){
+                        //wait
+                        await sleep(1000);
+                    }
+
+                    //Hide buttons
+                    hideButtons();
+                }else{
+                    //BOT action
+                    await botAction(players[i], false);
+                }
+
+                //Unhighlight player
+                players[i].card1Display.style.border = "none";
+                players[i].card2Display.style.border = "none";
+            }
+        }
+
+        if (checkAllPlayersHaveSameBet()){
+            allPlayersChecked = true;
+        }
+
+        if (await checkForFolded()){
+            allPlayersChecked();
+            
+        }
+
+}
+
+}
+
+
+function checkAllPlayersHaveSameBet(){
     for(let i = 0; i < players.length; i++){
+        
+
         if(players[i].folded){
+            console.log(players[i].name + " folded")
             continue;
         }
         
         if(players[i].betThisRound != pot.minBet){
-
-                        
-            players[i].card1Display.style.border = "2px solid red";
-            players[i].card2Display.style.border = "2px solid red";
-
-            if(players[i] == me){
-                // Display buttons
-                displayButtons();
-
-                //Wait till player presses check, fold, or raise
-                var t=0; 
-                while(players[i].turn){
-                    //wait
-                    await sleep(1000);
-                }
-
-                //Hide buttons
-                hideButtons();
-            }else{
-                //BOT action
-                await botAction(players[i], false);
-            }
-
-            //Unhighlight player
-            players[i].card1Display.style.border = "none";
-            players[i].card2Display.style.border = "none";
+            console.log(players[i].name + " has not bet the min bet")
+            console.log(players[i].betThisRound + " != " + pot.minBet)
+            return false;
         }
     }
+    return true;
 }
 
 async function fold(){
@@ -629,6 +665,7 @@ async function check(){
         me.chips -= pot.minBet;
         pot.chips += pot.minBet;
         me.bet += pot.minBet;
+        me.betThisRound += pot.minBet;
         drawChips(); 
         me.turn = false;
         await displayDialog(me, "Call $"+pot.minBet)
@@ -669,7 +706,7 @@ async function raise() {
       // The user confirmed the raise
       pot.main += parseInt(amount);
       pot.minBet = parseInt(amount);
-
+      me.betThisRound += parseInt(amount);
       me.chips -= pot.minBet;
       drawChips();
       me.turn = false;
@@ -738,6 +775,7 @@ async function blinds(){
     await sleep(1000);
     smallBlindPlayer.bet = pot.smallBlind;
     smallBlindPlayer.chips -= pot.smallBlind;
+    smallBlindPlayer.betThisRound = pot.smallBlind;
     pot.main += pot.smallBlind;
     drawChips();
     await displayDialog(smallBlindPlayer, "Small Blind")
@@ -751,11 +789,13 @@ async function blinds(){
     await displayDialog(bigBlindPlayer, "Big Blind")
     bigBlindPlayer.bet = pot.bigBlind;
     bigBlindPlayer.chips -= pot.bigBlind;
+    bigBlindPlayer.betThisRound = pot.bigBlind;
     pot.main += pot.bigBlind;
     bigBlindPlayer.card2Display.style.border = "none";
     bigBlindPlayer.card1Display.style.border = "none";
 
 
+    //Set min bet to be pot
 
     //TODO set big and small blind images
     //TODO raise blind every 10 rounds
@@ -821,7 +861,9 @@ async function botAction(player, canRaise){
     console.log("winPercentage: " + winPercentage);
     console.log("pot min bet:" + pot.minBet)
     
-    await sleep(5000);
+
+    
+    await sleep(3000);
     //random bluff chance
     var bluffChance = Math.floor(Math.random() * 100);
     
@@ -857,6 +899,16 @@ async function botAction(player, canRaise){
         return;
     }
 
+    if (player.betThisRound == pot.minBet){
+        console.log("BOT CHECK");
+        //Check
+        player.turn = false;
+        await displayDialog(player, "Check");
+        drawChips();
+        return;
+    }
+
+
 
     //Else we fold
     console.log("BOT FOLDED");
@@ -874,6 +926,7 @@ async function botAction(player, canRaise){
 }
 
 function botBet(player, amount){
+
     if (amount > player.chips){
         amount = player.chips;
         player.allIn = true;
@@ -927,6 +980,8 @@ function displayButtons(){
         checkButton.style.display = "inline-block";
         raiseButton.style.display = "inline-block";
     }
+
+    
 
 }
 
