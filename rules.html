@@ -5,17 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-<!-- Not my code taken from:
+<!-- Jquery code for sortable list:
   https://jqueryui.com/sortable/ -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
 <link rel="stylesheet" href="styles.css">
+
 
 
 </head>
 
 <body>
+  <!-- Header -->
     <header class="header">
         <a href="index.html" class="header-logo-link">
           <img src="images/logo.png" alt="logo" class="header-logo">
@@ -88,6 +91,8 @@
       </div>
     </nav>
 
+    <!-- Grid items -->
+    <!-- item 0 -->
     <div id="grid-container">
       <div class="grid-item" id="item-1">
         <div class="grid-header">Rules Basics</div>
@@ -105,11 +110,12 @@
 
         </div>
       </div>
+      <!-- Item 1 -->
       <div class="grid-item" id="item-2">
         <div class="grid-header">Betting</div>
         <div class="grid-content">Players take turns to place bets once the cards have been dealt. The two players to the left of the dealer are forced to bet a small amount known as the blind. After the first round of betting three community cards are drawn and displayed in the centre of the table, another round of better will then follow.  After this the final community card is drawn and the final round of betting is undertaken. At any time a player may fold and they will no longer be able to participate in the hand. In any round of betting each player must match the previous bet or check (if they have already matched). The remaining players after the final round of betting will display their hands the highest hand wins the pot. </div>
       </div>
-      <!-- Add more grid items as needed -->
+      <!-- item2 -->
       <div class="grid-item" id="item-3">
         <div class="grid-header">Starting Odds</div>
         <div class="grid-content" style="display: flex;">
@@ -117,14 +123,17 @@
           <p style="padding-left:3% ;">Texas Hold'em preflop betting strategies involve evaluating hand strength, position, and opponents' tendencies. Good hands warrant aggressive betting, weak hands should be folded. Consider blinds and stack sizes, play tight in early position, and more aggressively in later position. Adjust strategy as the game progresses. See figure for suggested play on starting hands. </p>
         </div>
       </div>
+      <!-- Item 3 -->
       <div class="grid-item" id="item-4">
         <div class="grid-header"> Table Etiquette & Dealing</div>
         <div class="grid-content">Poker table etiquette ensures a respectful and enjoyable atmosphere. Key aspects include: being punctual; paying attention to the game and acting in turn; avoiding excessive chatter, especially about ongoing hands; not revealing cards or providing unsolicited advice; keeping chips and cards visible; being courteous to dealers and opponents; handling winning and losing gracefully; maintaining personal hygiene; refraining from using electronic devices during the game; and avoiding slow rolling, string betting, or other improper actions.</div>
       </div>
+      <!-- Item 4 -->
       <div class="grid-item" id="item-5">
-        <div class="grid-header">Some more information</div>
-        <div class="grid-content">content</div>
+        <div class="grid-header">Flop, Turn, River</div>
+        <div class="grid-content">In Texas Hold'em, the flop, turn, and river are integral parts of the game that shape its outcome. The flop, consisting of the first three community cards, is dealt face-up after the initial round of betting. It unveils crucial information, offering players insights into potential hand strengths and possibilities. After the flop, the turn card is revealed, adding a fourth community card to the table. This card often alters the dynamics of the game, prompting players to reassess their strategies based on the expanded range of hand combinations. Finally, the river card, the fifth and final community card, is revealed. It represents players' last chance to improve their hands. The river determines the complete set of community cards available to all players. Following the river, a final round of betting takes place, leading to a showdown if multiple players remain. The player with the strongest five-card hand, comprising their hole cards and the community cards, emerges as the victor. The flop, turn, and river thus introduce crucial decision points, suspense, and strategic considerations in the thrilling game of Texas Hold'em.</div>
       </div>
+      <!-- item 5 -->
       <div class="grid-item" id="item-6">
         <div class="grid-header">Glossary</div>
         <div  class="grid-content">
@@ -132,22 +141,130 @@
           name="search" placeholder="Search terms..">
               <!-- ordered list -->
               <ol id='list'>
-                <li class="term" data-content="One's turn to act during a hand. To bet or raise. Used to describe a game in which there is a lot of betting and raising.">ACTION</li>
-                <li class="term" data-content="A small bet all players are required to make before a hand is dealt. An ante is similar to a blind, but everyone has to contribute it before a hand commences. Antes give the pot a value right off the bat.">ANTE</li>
-                <li class="term" data-content="A bet that places all of a player's chips into the pot.">ALL-IN</li>
-                <li class="term" data-content='Hitting your needed cards on the turn and the river to make your hand. For example, if theres one heart on the board and you have two in your hand and two more hearts show up on the turn and river, youve hit a: backdoor flush.'>BACKDOOR</li>
-                <li class="term" data-content="When a player who initially had a substantial statistical lead over an opponent loses his hand to that opponent after the flop, turn, or river.">BAD BEAT</li>
-                <li class="term" data-content='A retelling or recollection of a bad beat. These are often boring tales you already know the end of. For example: "I had ace-king, and my opponent had 2-3. There was an ace on the board. The turn was a 4, and then - Can you believe it? - the river was a 5!"'>BAD BEAT STORY</li>
-                <li class="term" data-content="The amount of chips the second player to the left of the dealer has to bet. The amount depends on the stakes. Like an ante, it is a posted amount that makes the pot worth playing for before the action begins. It is equivalent to one complete first round bet. It's a called a blind because it amounts to placing a bet without seeing the cards first.">BIG BLIND</li>
-                <li class="term" data-content="The generic term for either the big blind or the small blind. If you are one of the blinds, you are sitting either immediately to the left of the dealer button (small blind position) or one position farther left (big blind).">BLIND</li>
-                <li class="term" data-content="The community cards that everyone uses in combination with their pocket cards to form the best hand.">BOARD</li>
-                <li class="term" data-content='In a tournament, the bubble is the top finisher out of the money. For instance, if there are 450 players in a tournament and the top 45 get paid, then 46th place is known as "the bubble."'>BUBBLE</li>
-                <li class="term" data-content="The discarding of the top card before each betting round. In the case that there is a distinguishing mark on the top card, the burn card keeps the next card to be dealt concealed before it comes out. That way no unfair information is being intentionally or unintentionally conveyed.">BURN</li>
-                <li class="term" data-content="The position of the dealer. In live poker, it's usually denoted by placing a plastic disk in front of the dealer. It rotates clockwise each time the dealer shuffles for a new hand. The button is in an advantageous position, for he acts last in a betting round.">BUTTON</li>         
-              
+                <!-- Defintions from https://www.pokerstars.com/poker/terms/  -->
+                <li class="term" data-content="(1) Opportunity to act. If a player appears not to realize it's their turn, the dealer will say Your action. (2) Bets and raises. If a third heart hits the board and there's a lot of action, you have to assume that somebody has made the flush.">Action</li>
+                <li class="term" data-content="To run out of chips while betting or calling. In table stakes games, a player may not go into their pocket for more money during a hand. If they run out, a side pot is created in which they have no interest. However, they can still win the pot for which they had the chips. Example: Poor Bob. He made quads against the big full house, but he was all-in on the second bet.">All-in</li>
+                <li class="term" data-content="A small portion of a bet contributed by each player to seed the pot at the beginning of a poker hand. Most Hold'em games do not have an ante; they use blinds to get initial money into the pot.">Ante</li>
+                <li class="term" data-content="Catching both the turn and river card to make a drawing hand. For instance, suppose you have A-7. The flop comes A-6-4. You bet and are called. The turn is the T, which everybody checks, and then the river is the J. You've made a backdoor nut flush. See also runner.">Backdoor</li>
+                <li class="term" data-content="To have a hand that is a large underdog beat a heavily favored hand. It is generally used to imply that the winner of the pot had no business being in the pot at all, and it was the wildest of luck that they managed to catch the one card in the deck that would win the pot. We won't give any examples; you will hear plenty of them during your poker career.">Bad Beat</li>
+                <li class="term" data-content="The first chips placed in the pot on any street. Pre-flop, the small blind would be classified as the first bet.">Bet</li>
+                <li class="term" data-content="The larger of the two blinds typically used in a Hold'em game. The big blind is normally a full first round bet. See also blind and small blind.">Big Blind</li>
+                <li class="term" data-content="A board card that doesn't seem to affect the standings in the hand. If the flop is A-J-T, then a turn card of 2 would be considered a blank.">Blank</li>
+                <li class="term" data-content="A forced bet (or partial bet) put in by one or more players before any cards are dealt. Typically, blinds are put in by players immediately to the left of the button. See also live blind.">Blind</li>
+                <li class="term" data-content="To bet or raise holding a hand you believe to be weaker than that of your opponent, with the intention of getting them to fold their stronger hand.">Bluff</li>
+                <li class="term" data-content="All the community cards in a Hold'em game - the flop, turn, and river cards together. Example: There wasn't a single heart on the board.">Board</li>
+                <li class="term" data-content="A pair with the lowest card on the flop. If you have A-6, and the flop comes K-T-6, you have flopped bottom pair.">Bottom Pair</li>
+                <li class="term" data-content="To discard the top card from the deck, face down. This is done between each betting round before putting out the next community card(s). It is security against any player recognizing or glimpsing the next card to be used on the board.">Burn</li>
+                <li class="term" data-content="A marker that indicates the (nominal) dealer. Also used to refer to the player on the button. Example: Oh, the button raised.">Button</li>
+                <li class="term" data-content="(1) As in buy the pot. To bluff, hoping to buy the pot without being called. (2) As in buy the button. To bet or raise, hoping to make players between you and the button fold, thus allowing you to act last on subsequent betting rounds.">Buy</li>
+                <li class="term" data-content="To put into the pot an amount of money equal to the most recent bet or raise. The term see (as in I'll see that bet) is considered colloquial.">Call</li>
+                <li class="term" data-content="A weak-passive player who calls a lot, but doesn't raise or fold much. This is the kind of player you like to have in your game.">Calling Station</li>
+                <li class="term" data-content="To put in the last raise permitted on a betting round. This is typically the third or fourth raise. Dealers in California are fond of saying Capitola or Cappuccino.">Cap</li>
+                <li class="term" data-content="The last card of a certain rank in the deck. Example: The flop came J-8-3; I've got pocket jacks, he's got pocket 8's, and then the case eight falls on the river, and he beats my full house.">Case</li>
+                <li class="term" data-content="The first pot created during a poker hand, as opposed to one or more side pots created if one or more players go all-in. Also main pot.">Center Pot</li>
+                <li class="term" data-content="(1) To not bet, with the option to call or raise later in the betting round. Equivalent to betting zero dollars. (2) Another word for chip, as in poker chip.">Check</li>
+                <li class="term" data-content="To check and then raise when a player behind you bets. Occasionally you will hear people say this is not fair or ethical poker. Piffle. Almost all casinos permit check-raising, and it is an important poker tactic. It is particularly useful in low-limit Hold'em where you need extra strength to narrow the field if you have the best hand.">Check-Raise</li>
+                <li class="term" data-content="To call more than one bet in a single action. For instance, suppose the first player to act after the big blind raises. Now any player acting after that must call two bets cold. This is different from calling a single bet and then calling a subsequent raise.">Cold Call</li>
+                <li class="term" data-content="A drawing hand (probably from the craps term).">Come Hand</li>
+                <li class="term" data-content="Cards that are presented face-up in the middle of the poker table and shared among players in games like Hold'em and Omaha. These are also referred to as board cards or the board.">Community Cards</li>
+                <li class="term" data-content="A hand that is defined by all five cards - a straight, flush, full house or straight flush.">Complete Hand</li>
+                <li class="term" data-content="A Hold'em starting hand in which the two cards are one apart in rank. Examples: KQ, 76.">Connector</li>
+                <li class="term" data-content="To make your hand less valuable because of board cards that duplicate it. Example: you have 87 and the flop comes 9-T-J, so you have a straight. Now an 8 comes on the turn. This has counterfeited your hand and made it almost worthless.">Counterfeit</li>
+                <li class="term" data-content="To beat a hand - typically a big hand. You hear this most often applied to pocket aces: Third time tonight I've had pocket aces cracked.">Crack</li>
+                <li class="term" data-content="As in to cripple the deck. Meaning that you have most or all of the cards that somebody would want to have with the current board. If you have pocket kings, and the other two kings flop, you have crippled the deck.">Cripple</li>
+                <li class="term" data-content="The player in a poker game who actually (or theoretically) is dealing the cards. When a professional dealer (casino or cardroom) or automated dealer (online) is present - it is necessary to identify the player who would be dealing the cards because the blinds and the betting action are to the left of the dealer. This is done by utilizing a marker called a dealer button which travels around the table in a clockwise manner, moving to the next player after each hand is completed.">Dealer</li>
+                <li class="term" data-content="Shortened form of underdog.">Dog</li>
+                <li class="term" data-content="A hand that will almost always lose to a better hand that people usually play. For instance, K3 is dominated by KQ. With the exception of strange flops (e.g., 3-3-X, K-3-X), it will usually lose to KQ.">Dominated Hand</li>
+                <li class="term" data-content="To play a hand that is not yet good, but could become so if the right cards come. Example: I'm not there yet - I'm drawing. Also used as a noun. Example: I have to call because I have a good draw.">Draw</li>
+                <li class="term" data-content="Trying to make a hand that, even if made, will not win the pot. If you're drawing to make a flush, and your opponent already has a full house, you are drawing dead. Of course, this is a bad condition to be in.">Draw Dead</li>
+                <li class="term" data-content="Your rightful share of a pot. If the pot contains $80, and you have a 50% chance of winning it, you have $40 equity in the pot. This term is somewhat fanciful since you will either win $80 or $0, but it gives you an idea of how much you can expect to win.">Equity</li>
+                <li class="term" data-content="(1) The amount you expect to gain on average if you make a certain play. For instance, suppose you put $10 into a $50 pot to draw at a hand that you will make 25% of the time, and it will win every time you make it. Three out of four times, you do not make your draw, and lose $10 each time for a total of $30. The fourth time, you will make your draw, winning $50. Your total gain over those four average hands is $50-$30 = $20, an average of $5 per hand. Thus, calling the $10 has a positive expectation of $5. (2) The amount you expect to make at the poker table in a specific time period. Suppose in 100 hours of play, you win $527. Then your expectation is $5.27/hr. Of course, you won't make that exact amount each hour (and some hours you will lose), but it's one measure of your anticipated earnings.">Expectation</li>
+                <li class="term" data-content="A blind put in by a player just entering the game, returning to the game, or otherwise changing his position at the table. See also blind and post.">Extra Blind</li>
+                <li class="term" data-content="A pot in which all (or almost all) of the players call before the flop.">Family Pot</li>
+                <li class="term" data-content="As in play fast. To play a hand aggressively, betting and raising as much as possible. Example: When you flop a set but there's a flush draw possible, you have to play it fast.">Fast</li>
+                <li class="term" data-content="A poker hand which is the statistical favorite to win.">Favourite</li>
+                <li class="term" data-content="The first three community cards, put out face-up, altogether.">Flop</li>
+                <li class="term" data-content="To forfeit any chance of winning the current pot in poker. To lay down your hand or throw your hand in instead of calling or raising a bet.">Fold</li>
+                <li class="term" data-content="A hand that may not be played for one reason or another. A player with a foul hand may not make any claim on any portion of the pot. Example: He ended up with three cards after the flop, so the dealer declared his hand foul.">Foul</li>
+                <li class="term" data-content="A turn or river card on which you don't have to call a bet because of play earlier in the hand (or because of your reputation with your opponents). For instance, if you are on the button and raise when you flop a flush draw, your opponents may check to you on the turn. If you make your flush on the turn, you can bet. If you don't get it on the turn, you can check as well, seeing the river card for free.">Free Card</li>
+                <li class="term" data-content="One player has a shot at winning an entire pot when he is currently tied with another player. For instance, suppose you have A-Q of clubs and your opponent has A-Q of hearts. The flop is Q-5-T including two clubs. You are tied with your opponent right now, but are free rolling, because you can win the whole pot and your opponent can't. If no club comes, you split the pot with him; if it does come, you win the whole thing.">Free Roll</li>
+                <li class="term" data-content="A straight filled inside. If you have 9-8, the flop comes 7-5-2, and the turn is the 6, you've made your gutshot straight.">Gutshot Straight</li>
+                <li class="term" data-content="A pot that is being contested by only two players. Example: It was heads up by the turn.">Heads Up</li>
+                <li class="term" data-content="As in the flop hit me, meaning the flop contains cards that help your hand. If you have AK, and the flop comes K-7-2, it hit you.">Hit</li>
+                <li class="term" data-content="Cards dealt face-down to a player - most commonly used when describing the first two player cards in Hold'em and the first four player cards in Omaha.">Hole Cards</li>
+                <li class="term" data-content="The establishment running the game. Example: The $2 you put on the button goes to the house.">House</li>
+                <li class="term" data-content="Pot odds that do not exist at the moment, but may be included in your calculations because of bets you expect to win if you hit your hand. For instance, you might call with a flush draw on the turn even though the pot isn't offering you quite 4:1 odds (your chance of making the flush) because you're sure you can win a bet from your opponent on the river if you make your flush.">Implied Odds</li>
+                <li class="term" data-content="Seeking one specific card value to make a straight. For instance, a player holding 9-5 with a board of 2-7-6 can make a straight with any eight. This is also known as a gutshot straight draw.">Inside Straight Draw</li>
+                <li class="term" data-content="A special bonus paid to the loser of a hand if he gets a very good hand beaten. In Hold'em, the loser must typically get aces full or better beaten. In some of the large southern California card clubs, jackpots have gotten over $50,000. The jackpot is funded with money removed from the game as part of the rake.">Jackpot</li>
+                <li class="term" data-content="An unpaired card used to determine the better of two near-equivalent hands. For instance, suppose you have AK and your opponent has AQ. If the flop has an ace in it, you both have a pair of aces, but you have a king kicker. Kickers can be vitally important in Hold'em.">Kicker</li>
+                <li class="term" data-content="A forced bet put in by one or more players before any cards are dealt. The live means those players still have the option of raising when the action gets back around to them.">Live Blind</li>
+                <li class="term" data-content="A player who does a lot of hyper-aggressive raising, betting, and bluffing. A true maniac is not a good player, but is simply doing a lot of gambling. However, a player who occasionally acts like a maniac and confuses his opponents is quite dangerous.">Maniac</li>
+                <li class="term" data-content="The pile of folded and burned cards in front of the dealer. Example: His hand hit the muck so the dealer ruled it folded even though the guy wanted to get his cards back. Also used as a verb. Example: He didn't have any outs so he mucked his hand.">Muck</li>
+                <li class="term" data-content="A version of poker in which a player may bet any amount of chips (up to the number in front of them) whenever it is their turn to act. It is a very different game from limit poker.">No Limit</li>
+                <li class="term" data-content="The best possible hand given the board. If the board is K-J-T-4-2 with three hearts, then A-X of hearts is the nuts (with X representing a card of any value). You will occasionally hear the term applied to the best possible hand of a certain category, even though it isn't the overall nuts. For the above example, somebody with A-Q might say they had the nut straight.">Nuts</li>
+                <li class="term" data-content="A Hold'em starting hand with two cards of different suits.">Offsuit</li>
+                <li class="term" data-content="A Hold'em starting hand with two cards two apart in rank. Examples: J9s, 64.">One-Gap</li>
+                <li class="term" data-content="Seeking one of two card values to make a straight. For instance, a player holding 9-8 with a board of 2-7-6 can make a straight with either a ten (6-7-8-9-T) or with a five (5-6-7-8-9). This is also known as an up-and-down straight draw.">Open-Ended Straight Draw</li>
+                <li class="term" data-content="A card that will make your hand win. Normally heard in the plural. Example: Any spade will make my flush, so I have nine outs.">Out</li>
+                <li class="term" data-content="To beat. Example: Susie outran my set when her flush card hit on the river.">Outrun</li>
+                <li class="term" data-content="To call a bet after one or more others players have already called.">Overcall</li>
+                <li class="term" data-content="A card higher than any card on the board. For instance, if you have AQ and the flop comes J-7-3, you don't have a pair, but you have two overcards.">Overcard</li>
+                <li class="term" data-content="A pocket pair higher than any card on the flop. If you have QQ and the flop comes J-8-3, you have an overpair.">Overpair</li>
+                <li class="term" data-content="To call a bet when the bettor is representing a hand that you can't beat, but the pot is sufficiently large to justify a call anyway. Example: He played it exactly like he made the flush, but I had top set so I paid him off.">Pay Off</li>
+                <li class="term" data-content="To show down a hand in Hold'em when your cards don't make a hand any better than is shown on the board. For instance, if you have 22, and the board is 4-4-9-9-A (no flush possible), then you must play the board: the best possible hand you can make doesn't use any of your cards. Note that if you play the board, the best you can do is split the pot with all remaining players.">Play the Board</li>
+                <li class="term" data-content="Your unique cards that only you can see. For instance, He had pocket sixes (a pair of sixes), or I had ace-king in the pocket. See also “hole cards”.">Pocket</li>
+                <li class="term" data-content="A Hold'em starting hand with two cards of the same rank, making a pair. Example: I had big pocket pairs seven times in the first hour. What else can you ask for?">Pocket Pair</li>
+                <li class="term" data-content="To put in a blind bet, generally required when you first sit down in a cardroom game. You may also be required to post a blind if you change seats at the table in a way that moves you away from the blinds. Example: a player leaves one seat at a table and takes another in such a way that he moves farther from the blinds. He is required to post an extra blind to receive a hand. See also extra blind.">Post</li>
+                <li class="term" data-content="A version of poker in which a player may bet up to the amount of money in the pot whenever it is his turn to act. Like No Limit, this is a very different game from limit poker.">Pot Limit</li>
+                <li class="term" data-content="The amount of money in the pot compared to the amount you must put in the pot to continue playing. For example, suppose there is $60 in the pot. Somebody bets $6, so the pot now contains $66. It costs you $6 to call, so your pot odds are 11:1. If your chance of having the best hand is at least 1 out of 12, you should call. Pot odds also apply to draws. For instance, suppose you have a draw to the nut flush with one card left to come. In this case, you are about a 4:1 underdog to make your flush. If it costs you $8 to call the bet, then there must be about $32 in the pot (including the most recent bet) to make your call correct.">Pot Odds</li>
+                <li class="term" data-content="The pot odds you are getting for a draw or call. Example: The pot was laying me a high enough price, so I stayed in with my gutshot straight draw.">Price</li>
+                <li class="term" data-content="(1) To keep your hand or a chip on your cards. This prevents them from being fouled by a discarded hand, or accidentally mucked by the dealer. (2) To invest more money in a pot so blind money that you've already put in isn't wasted. Example: He'll always protect his blinds, no matter how bad his cards are.">Protect</li>
+                <li class="term" data-content="Four of a kind.">Quads</li>
+                <li class="term" data-content="A flop (or board) that doesn't appear to help anybody very much. A flop that came down J-6-2  would look ragged.">Ragged</li>
+                <li class="term" data-content="A flop that contains three different suits, thus no flush can be made on the turn. Can also mean a complete five card board that has no more than two of any suit, thus no flush is possible.">Rainbow</li>
+                <li class="term" data-content="To increase the amount of the current bet.">Raise</li>
+                <li class="term" data-content="An amount of money taken out of every pot by the dealer. This is the cardroom's income.">Rake</li>
+                <li class="term" data-content="The numerical value of a card (as opposed to its suit). Example: jack, seven.">Rank</li>
+                <li class="term" data-content="To play as if you hold a certain hand. For instance, if you raised before the flop, and then raised again when the flop came ace high, you would be representing at least an ace with a good kicker.">Represent</li>
+                <li class="term" data-content="A regular poker game as opposed to a tournament. Also referred to as a live game since actual money is in play instead of tournament chips.">Ring Game</li>
+                <li class="term" data-content="The fifth and final community card, put out face-up, by itself. Also known as fifth street. Metaphors involving the river are some of poker's most treasured clichés, e.g., He drowned in the river.">River</li>
+                <li class="term" data-content="A player who plays very tight, not very creatively. He raises only with the best hands. A real rock is fairly predictable: if he raises you on the river, you can throw away just about anything but the nuts.">Rock</li>
+                <li class="term" data-content="Typically said runner-runner to describe a hand that was made only by catching the correct cards on both the turn and the river. Example: He made a runner-runner flush to beat my trips. See also backdoor.">Runner</li>
+                <li class="term" data-content="A card that may well turn the best hand into trash. If you have T-8 and the flop comes Q-J-9, you almost assuredly have the best hand. However, a turn card of T would be very scary because it would almost guarantee that you are now beaten.">Scare Card</li>
+                <li class="term" data-content="A pair with the second highest card on the flop. If you have A-T, and the flop comes K-T-6, you have flopped second pair. See top pair.">Second Pair</li>
+                <li class="term" data-content="As in sell a hand. In a spread-limit game, this means betting less than the maximum when you have a very strong hand, hoping players will call whereas they would not have called a maximum bet.">Sell</li>
+                <li class="term" data-content="A powerful concept first discussed by David Sklansky. It is a bet or raise that you hope will not be called, but you have some outs if it is. A semi-bluff may be correct when betting for value is not correct, a pure bluff is not correct, but the combination of the two may be a positive expectation play. Example: you have K-Q, and the flop is T-5 -J. If you bet now, it's a semi-bluff. You probably don't have the best hand, and you'd like to see your opponents fold immediately. Nevertheless, if you do get callers, you could still improve to the best hand.">Semi-Bluff</li>
+                <li class="term" data-content="Three of a kind when you have two of the rank in your hand, and there is one on the board.">Set</li>
+                <li class="term" data-content="A number of chips that is not very many compared to the other players at the table. If you have $10 in front of you, and everybody else at the table has over $100, you are playing on a short stack.">Short Stack</li>
+                <li class="term" data-content="The point at which all players remaining in the hand turn their cards over and determine who has the best hand - i.e. after the fourth round of betting is completed. Of course, if a final bet or raise is not called, there is no showdown.">Showdown</li>
+                <li class="term" data-content="A pot created in which a player has no interest because he has run out of chips. Example: Al bets $6, Beth calls the $6, and Carl calls, but he has only $2 left. An $8 side pot is created that either Al or Beth can win, but not Carl. Carl, however, can still win all the money in the original or center pot.">Side Pot</li>
+                <li class="term" data-content="To play a strong hand weakly so more players will stay in the pot.">Slow Play</li>
+                <li class="term" data-content="The smaller of two blind bets typically used in a Hold'em game. Normally, the small blind is one-third to two-thirds of a first round bet. See also big blind and blind.">Small Blind</li>
+                <li class="term" data-content="To call. Smooth call often implies slow playing a strong hand. Example: I flopped the nut flush but just smooth called when the guy in front of me bet - I didn't want to scare anybody out.">Smooth Call</li>
+                <li class="term" data-content="A pot that is shared by two or more players because they have equivalent hands.">Split Pot</li>
+                <li class="term" data-content="A two pair hand in which one of each of your cards' ranks appears on the board as well. Example: you have T-9, the flop is T-9-5, you have a split two pair. This is in comparison to two pair where there is a pair on the board. Example: you have T-9, the flop is 9-5-5.">Split Two Pair</li>
+                <li class="term" data-content="A betting structure in which a player may bet any amount in a range on every betting round. A typical spread-limit structure is $2-$6, where a player may bet as little as $2 or as much as $6 on every betting round.">Spread-limit</li>
+                <li class="term" data-content="An optional extra blind bet, typically made by the player one to the left of the big blind, equal to twice the big blind. This is effectively a raise, and forces any player who wants to play to pay two bets. Furthermore, the straddler acts last before the flop, and may re-raise.">Straddle</li>
+                <li class="term" data-content="A bet (more typically a raise) in which a player doesn't get all the chips required for the raise into the pot in one motion. Unless they verbally declared the raise, they can be forced to withdraw it and just call. This prevents the unethical play of putting out enough chips to call, seeing what effect that had, and then possibly raising.">String Bet</li>
+                <li class="term" data-content="Used to apply to a certain betting structure in poker games. The typical definition of a structured Hold'em game is a fixed amount for bets and raises before the flop and on the flop, and then twice that amount on the turn and river. Example: a $2-$4 structured Hold'em game: bets and raises of $2 before the flop and on the flop; $4 bets and raises on the turn and river.">Structured</li>
+                <li class="term" data-content="A Hold'em starting hand in which the two cards are the same suit. Example: I had to play J-3 - it was suited.">Suited</li>
+                <li class="term" data-content="A rule in a poker game meaning that a player may not go into his pocket for money during a hand. He may only invest the amount of money in front of him into the current pot. If he runs out of chips during the hand, a side pot is created in which he has no interest. All casino poker is played table stakes. The definition sometimes also includes the rule that a player may not remove chips from the table during a game. While this rule might not be referred to as table stakes, it is enforced almost universally in public poker games.">Table Stakes</li>
+                <li class="term" data-content="A clue or hint that a player unknowingly gives about the strength of his hand, his next action, etc. May originally be from telegraph or the obvious use that he tells you what he's going to do before he does it.">Tell</li>
+                <li class="term" data-content="To play wildly or recklessly. A player is said to be on tilt if he is not playing his best, playing too many hands, trying wild bluffs, raising with bad hands, etc.">Tilt</li>
+                <li class="term" data-content="(1) A request by a player to suspend play while he decides what he's going to do. Simply, Time, please! If a player doesn't request time and there is a substantial amount of action behind him, the dealer may rule that the player has folded. (2) An amount of money collected either on the button or every half hour by the cardroom. This is another way for the house to make its money (see rake).">Time</li>
+                <li class="term" data-content="A small amount of money (typically $.50 or $1.00) given to the dealer by the winner of a pot. Quite often, tokes represent the great majority of a dealer's income.">Toke</li>
+                <li class="term" data-content="A pair with the highest card on the flop. If you have A-Q, and the flop comes Q-T-6, you have flopped top pair. See second pair.">Top Pair</li>
+                <li class="term" data-content="The highest possible trips. Example: you have T-T, and the flop comes T-8-9. You have flopped top set.">Top Set</li>
+                <li class="term" data-content="Two pair, with your two hole cards pairing the two highest cards on the board.">Top Two</li>
+                <li class="term" data-content="Two pair, with your two hole cards pairing the highest and lowest cards on the board.">Top and Bottom</li>
+                <li class="term" data-content="Three of a kind.">Trips</li>
+                <li class="term" data-content="The fourth community card. Put out face-up, by itself. Also known as fourth street.">Turn</li>
+                <li class="term" data-content="The position of the player who acts first on a betting round. For instance, if you are one to the left of the big blind, you are under the gun before the flop.">Under the Gun</li>
+                <li class="term" data-content="A person or hand not mathematically favored to win a pot. For instance, if you flop four cards to your flush, you are not quite a 2:1 underdog to make your flush by the river (that is, you will make your flush about one in three times). See also dog.">Underdog</li>
+                <li class="term" data-content="As in bet for value. This means that you would actually like your opponents to call your bet (as opposed to a bluff). Generally, it's because you have the best hand. However, it can also be a draw that, given enough callers, has a positive expectation.">Value</li>
+                <li class="term" data-content="A measure of the up and down swings your bankroll goes through. Variance is not necessarily a measure of how well you play. However, the higher your variance, the wider swings you'll see in your bankroll.">Variance</li>
               </ol>
 
-            <!-- Search script -->
           </div>
         </div>
       </div>
