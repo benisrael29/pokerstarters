@@ -1,3 +1,6 @@
+/* This file hands the animations found on the variants page  */
+
+
 /* Texas Holdem Cards */
 var card1 = document.querySelector('.card1');
 var card2 = document.querySelector('.card2');

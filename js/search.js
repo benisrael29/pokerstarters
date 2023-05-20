@@ -1,4 +1,15 @@
 
+// This file contains the code for the search bar and the popup
+
+//Document components 
+const listItems = document.querySelectorAll("#list li");
+const popup = document.getElementById("popup");
+const popupContent = document.getElementById("popup-content");
+const closePopup = document.getElementById("close-popup");
+const overlay = document.getElementById("popup-overlay");
+const popupTerm = document.getElementById("popup-term");
+
+
 function search_term() {
     let input = document.getElementById('searchbar').value
     input=input.toLowerCase();
@@ -16,12 +27,6 @@ function search_term() {
 
 
   
-const listItems = document.querySelectorAll("#list li");
-const popup = document.getElementById("popup");
-const popupContent = document.getElementById("popup-content");
-const closePopup = document.getElementById("close-popup");
-const overlay = document.getElementById("popup-overlay");
-const popupTerm = document.getElementById("popup-term");
 
 listItems.forEach((item) => {
   item.addEventListener("click", () => {

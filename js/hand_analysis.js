@@ -70,7 +70,8 @@ cardImages.forEach((cardImage) => {
 HAND EVALUATOR:
 
 The idea behind this evalutor is to use monte carlo to simulate and estimate the strength of your hand. 
-We need to therefore define the rules efficently
+We will generate a random opponent hand and community cards and compare the two hands.
+We will run this simulation 100000 times and count the number of times your hand wins.
 */
 
 function displayHandStrength() {
@@ -102,6 +103,7 @@ function displayHandStrength() {
 
 }
 
+/* Generate two random cards not in the deck already */
 function generateRandomOpponentHand(my_cards, community_cards) {
   const allUsedCards = new Set([...my_cards, ...community_cards]);
   const ranks = '23456789TJQKA';
@@ -122,6 +124,7 @@ function generateRandomOpponentHand(my_cards, community_cards) {
   return opp_cards;
 }
 
+/* Generate remaning community cards */
 function generateMissingCommunityCards(my_cards, community_cards){
   const ranks = '23456789TJQKA';
   const suits = 'cdhs';
@@ -147,7 +150,7 @@ function generateMissingCommunityCards(my_cards, community_cards){
 
 
 
-
+/* Get hands and compare */
 function evalHands(my_cards, opp_cards, community_cards){
 
   const all_my_cards = my_cards.concat(community_cards);
@@ -159,7 +162,12 @@ function evalHands(my_cards, opp_cards, community_cards){
   
 }
   
-  
+ 
+/* Apply the rules of poker to hands. 
+Will return a data structure where:
+{hand: 'straight flush', rank: 8, secondary rank: 3, kickers: [12]}
+
+*/
 function evaluateHand(cards) {
   const ranks = '23456789TJQKA';
   const suits = 'cdhs';
@@ -246,6 +254,7 @@ function findStraight(rankCounts) {
   return false;
 }
 
+/* Campare the hands using returned structure */
 function compareHands(my_hand, opp_hand) {
   if (my_hand.handRank > opp_hand.handRank) {
     return true;

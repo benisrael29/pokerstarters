@@ -1573,3 +1573,8 @@ transform: translateY(-8px);
 .fade.hidden {
   opacity: 0;
 }
+
+#contact-footer{
+  position: fixed;
+  bottom: 0;
+}

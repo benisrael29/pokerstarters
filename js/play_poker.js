@@ -1,3 +1,8 @@
+/* This file contains all the components of the play poker game. It could probably be set out better using classes. 
+
+*/
+
+
 /* Import deck */
 import {Deck} from "./play_poker_tools/deck.js";
 import {convertHand} from "./play_poker_tools/deck.js";
@@ -33,7 +38,7 @@ const confirmRaiseButton = document.getElementById("confirm-raise-button");
 
 
 
-//Players
+//Players 
 var player1 = {
     name: "P1",
     hand: [],
@@ -960,6 +965,7 @@ function botBet(player, amount){
 }
 
 function getHighestBet() {
+    /* Iterate through all the players and get highest */
     var highestBet = 0;
     for (var i = 0; i < players.length; i++) {
       var player = players[i];
@@ -976,6 +982,7 @@ function getHighestBet() {
 
 
 async function displayDialog(player, dialog){
+    /* Take player and display a dialog */
     player.dialog.innerHTML = dialog;
     player.dialog.classList.add("visible")
     await sleep(1000);
@@ -1002,6 +1009,7 @@ async function checkForFolded(){
 
 
 function displayButtons(){
+    /* Display my action options */
     foldButton.style.display = "inline-block";
     var highestBet = getHighestBet();
 

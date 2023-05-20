@@ -1,3 +1,5 @@
+
+// Handle the subscription form submission
 document.querySelector('.subscription-form').addEventListener('submit', function (event) {
     event.preventDefault();
   
